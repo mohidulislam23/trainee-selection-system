@@ -22,4 +22,5 @@ public class EvaluatorEntity {
     @OneToOne
     @JoinColumn(name = "title")
     private CircularEntity title;
+
 }
