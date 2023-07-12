@@ -1,10 +1,7 @@
 package com.bjit.tss.service.Implementation;
 
-import com.bjit.tss.entity.ApplicantEntity;
 import com.bjit.tss.entity.ApprovalEntity;
-import com.bjit.tss.entity.EvaluatorEntity;
 import com.bjit.tss.model.ApprovalModel;
-import com.bjit.tss.repository.ApplicantRepository;
 import com.bjit.tss.repository.ApprovalRepository;
 import com.bjit.tss.service.ApprovalService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +23,7 @@ public class ApprovalServiceImplementation implements ApprovalService {
         ApprovalEntity approvalEntity = new ApprovalEntity();
         approvalEntity.setApplicant(approvalModel.getApplicant());
         approvalEntity.setCircular(approvalModel.getCircular());
-        approvalEntity.setApproved(approvalModel.isApproved());
+        approvalEntity.setApproved(false); // by dafault it is false
 
         ApprovalEntity savedApproval = approvalRepository.save(approvalEntity);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedApproval);
@@ -39,7 +36,7 @@ public class ApprovalServiceImplementation implements ApprovalService {
             ApprovalEntity existingApproval = optionalApproval.get();
             existingApproval.setApplicant(approvalModel.getApplicant());
             existingApproval.setCircular(approvalModel.getCircular());
-            existingApproval.setApproved(approvalModel.isApproved());
+            existingApproval.setApproved(approvalModel.isApproved()); // apply can be approved from here
 
             approvalRepository.save(existingApproval);
             return ResponseEntity.ok(existingApproval);
