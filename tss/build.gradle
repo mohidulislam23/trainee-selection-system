@@ -44,6 +44,10 @@ dependencies {
 //	itextpdf
 	implementation 'com.itextpdf:itext7-core:7.1.16'
 
+//	QR Code
+	implementation 'com.google.zxing:core:3.4.1'
+	implementation 'com.google.zxing:javase:3.4.1'
+
 }
 
 tasks.named('test') {
