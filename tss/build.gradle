@@ -48,6 +48,13 @@ dependencies {
 	implementation 'com.google.zxing:core:3.4.1'
 	implementation 'com.google.zxing:javase:3.4.1'
 
+//	Mail Library
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'com.sun.mail:javax.mail:1.6.2'
+//	another mail library
+	implementation group: 'javax.mail', name: 'javax.mail-api', version: '1.6.2'
+
+
 }
 
 tasks.named('test') {

@@ -14,5 +14,9 @@ public interface MailService {
     ResponseEntity<Object> getAllMails();
 
     ResponseEntity<Object> getMailById(Long mailId);
+
+    ResponseEntity<Object> sendMailToApplicants2(Long mailId, String username, String password);
+
+
 }
 
