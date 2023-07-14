@@ -54,7 +54,6 @@ dependencies {
 //	another mail library
 	implementation group: 'javax.mail', name: 'javax.mail-api', version: '1.6.2'
 
-
 }
 
 tasks.named('test') {
