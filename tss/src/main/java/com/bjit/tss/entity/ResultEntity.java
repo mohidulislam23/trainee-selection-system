@@ -19,4 +19,5 @@ public class ResultEntity {
     private Long resultId;
     private Double score;
     private Long applicantId;
+    private String circularTitle;
 }

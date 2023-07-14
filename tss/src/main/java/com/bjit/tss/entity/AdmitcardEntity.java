@@ -13,7 +13,8 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name="admitcards")
-public class AdmitcardEntity {
+public class
+AdmitcardEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long admitcardId;
@@ -22,3 +23,5 @@ public class AdmitcardEntity {
     private ApprovalEntity candidateId;
     private Long serialNumber;
 }
+
+
