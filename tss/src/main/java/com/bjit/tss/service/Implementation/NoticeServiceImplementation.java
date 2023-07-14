@@ -4,6 +4,7 @@ import com.bjit.tss.entity.NoticeEntity;
 import com.bjit.tss.model.NoticeModel;
 import com.bjit.tss.repository.NoticeRepository;
 import com.bjit.tss.service.NoticeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,13 +13,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class NoticeServiceImplementation implements NoticeService {
 
     private final NoticeRepository noticeRepository;
 
-    public NoticeServiceImplementation(NoticeRepository noticeRepository) {
-        this.noticeRepository = noticeRepository;
-    }
+//    public NoticeServiceImplementation(NoticeRepository noticeRepository) {
+//        this.noticeRepository = noticeRepository;
+//    }
 
     @Override
     public ResponseEntity<Object> createNotice(NoticeModel noticeModel) {

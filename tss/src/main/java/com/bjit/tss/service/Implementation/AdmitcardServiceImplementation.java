@@ -177,11 +177,10 @@ public class AdmitcardServiceImplementation implements AdmitcardService {
         return counter.incrementAndGet();
     }
     /////////////////////////////////////////////////////////////////////////////////
-    private byte[] generateAdmitcardPdfBytes(AdmitcardEntity admitcard) {
-        // Logic to generate the Admit Card PDF using a PDF library
-        // Customize the implementation based on your requirements and chosen PDF library
 
-        // Example: Generating a dummy PDF with the admit card details and QR code
+
+    private byte[] generateAdmitcardPdfBytes(AdmitcardEntity admitcard) {
+        // Generating a dummy PDF with the admit card details and QR code
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
              PdfDocument pdfDocument = new PdfDocument(new PdfWriter(outputStream));
              Document document = new Document(pdfDocument)) {
