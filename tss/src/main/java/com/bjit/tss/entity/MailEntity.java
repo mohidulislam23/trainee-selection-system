@@ -19,9 +19,7 @@ public class MailEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long mailId;
-    private String sender;
-    // apatoto reciepient dorkar nai
-    //private String reciepient; // eta applicant email er sasthe one to many connection hobe <--implement it future
+//    private String sender;
     private String subject;
     private String body;
     private Date timestamp;

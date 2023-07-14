@@ -2,6 +2,7 @@ package com.bjit.tss.controllers;
 
 import com.bjit.tss.model.MailModel;
 import com.bjit.tss.service.MailService;
+import com.bjit.tss.utils.MailCredentials;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -38,5 +39,14 @@ public class MailController {
     public ResponseEntity<Object> getMailById(@PathVariable Long mailId) {
         return mailService.getMailById(mailId);
     }
+
+    @PostMapping("/sendToApplicants/{mailId}")
+    public ResponseEntity<Object> sendMailToApplicants(@PathVariable Long mailId, @RequestBody MailCredentials credentials) {
+        String username = credentials.getUsername();
+        String password = credentials.getPassword();
+
+        return mailService.sendMailToApplicants2(mailId, username, password);
+    }
+
 }
 

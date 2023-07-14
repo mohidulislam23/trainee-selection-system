@@ -21,5 +21,4 @@ public class AdmitcardEntity {
     @JoinColumn(name = "applicant_id")
     private ApprovalEntity candidateId;
     private Long serialNumber;
-    //private String qr_code;
 }

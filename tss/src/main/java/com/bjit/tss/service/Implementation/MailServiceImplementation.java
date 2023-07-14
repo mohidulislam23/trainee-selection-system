@@ -1,9 +1,14 @@
 package com.bjit.tss.service.Implementation;
 
+import com.bjit.tss.entity.AdmitcardEntity;
 import com.bjit.tss.entity.MailEntity;
 import com.bjit.tss.model.MailModel;
+import com.bjit.tss.repository.AdmitcardRepository;
 import com.bjit.tss.repository.MailRepository;
 import com.bjit.tss.service.MailService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,19 +17,28 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.mail.*;
+import javax.mail.internet.MimeMessage;
+
+//for mail
+import java.util.Properties;
+import javax.mail.internet.InternetAddress;
+
+
 @Service
+@RequiredArgsConstructor
 public class MailServiceImplementation implements MailService {
 
     private final MailRepository mailRepository;
+    private final AdmitcardRepository admitcardRepository;
 
-    public MailServiceImplementation(MailRepository mailRepository) {
-        this.mailRepository = mailRepository;
-    }
+    @Autowired
+    private Environment environment;
+
 
     @Override
     public ResponseEntity<Object> createMail(MailModel mailModel) {
         MailEntity mailEntity = MailEntity.builder()
-                .sender(mailModel.getSender())
                 .subject(mailModel.getSubject())
                 .body(mailModel.getBody())
                 .timestamp(new Date())
@@ -39,7 +53,6 @@ public class MailServiceImplementation implements MailService {
         Optional<MailEntity> optionalMail = mailRepository.findById(mailId);
         if (optionalMail.isPresent()) {
             MailEntity existingMail = optionalMail.get();
-            existingMail.setSender(mailModel.getSender());
             existingMail.setSubject(mailModel.getSubject());
             existingMail.setBody(mailModel.getBody());
             existingMail.setTimestamp(new Date());
@@ -75,6 +88,72 @@ public class MailServiceImplementation implements MailService {
         if (optionalMail.isPresent()) {
             MailEntity mail = optionalMail.get();
             return ResponseEntity.ok(mail);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> sendMailToApplicants2(Long mailId, String username, String password) {
+
+        Optional<MailEntity> optionalMail = mailRepository.findById(mailId);
+
+        if (optionalMail.isPresent()) {
+            MailEntity mail = optionalMail.get();
+
+            List<AdmitcardEntity> admitcards = admitcardRepository.findAll();
+
+            String subject = mail.getSubject();
+            String body = mail.getBody();
+
+//            String username = "mohidul2300@gmail.com";
+//            String password = "oeumpprcddiqanou";
+
+            for (AdmitcardEntity admitcard : admitcards) {
+
+                String recipient = admitcard.getCandidateId().getApplicant().getEmail();
+
+                // using JavaMail:
+                try {
+//                    Properties props = new Properties();
+//                    props.put("mail.smtp.host", "smtp.gmail.com");
+//                    props.put("mail.smtp.port", "587");
+//                    props.put("mail.smtp.auth", "true");
+//                    props.put("mail.smtp.starttls.enable", "true");
+
+                    Properties props = new Properties();
+                    props.put("mail.smtp.host", environment.getProperty("mail.smtp.host"));
+                    props.put("mail.smtp.port", environment.getProperty("mail.smtp.port"));
+                    props.put("mail.smtp.auth", environment.getProperty("mail.smtp.auth"));
+                    props.put("mail.smtp.starttls.enable", environment.getProperty("mail.smtp.starttls.enable"));
+
+                    Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(username, password);
+                        }
+                    });
+
+//                    Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+//                        protected PasswordAuthentication getPasswordAuthentication() {
+//                            return new PasswordAuthentication(username, password);
+//                        }
+//                    });
+
+                    Message message = new MimeMessage(session);
+                    message.setFrom(new InternetAddress(username));
+                    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
+                    message.setSubject(subject);
+                    message.setText(body);
+
+                    Transport.send(message);
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while sending emails.");
+                }
+
+            }
+
+            return ResponseEntity.ok("Emails sent to applicants.");
         } else {
             return ResponseEntity.notFound().build();
         }
