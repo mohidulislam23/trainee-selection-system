@@ -32,11 +32,22 @@ public class ApprovalServiceImplementation implements ApprovalService {
     @Override
     public ResponseEntity<Object> updateApproval(Long approvalId, ApprovalModel approvalModel) {
         Optional<ApprovalEntity> optionalApproval = approvalRepository.findById(approvalId);
-        if(optionalApproval.isPresent()) {
+        if (optionalApproval.isPresent()) {
             ApprovalEntity existingApproval = optionalApproval.get();
+
+            // Check if the applicant is already approved for another circular
+            List<ApprovalEntity> existingApprovals = approvalRepository.findByApplicant_ApplicantIdAndCircularNot(approvalModel.getApplicant().getApplicantId(), approvalModel.getCircular());
+            boolean isPreviousApprovalFound = existingApprovals.stream()
+                    .anyMatch(approval -> approval.isApproved());
+
+            if (isPreviousApprovalFound) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("Applicant is already approved for another circular.");
+            }
+
             existingApproval.setApplicant(approvalModel.getApplicant());
             existingApproval.setCircular(approvalModel.getCircular());
-            existingApproval.setApproved(approvalModel.isApproved()); // apply can be approved from here
+            existingApproval.setApproved(approvalModel.isApproved());
 
             approvalRepository.save(existingApproval);
             return ResponseEntity.ok(existingApproval);
@@ -44,6 +55,23 @@ public class ApprovalServiceImplementation implements ApprovalService {
             return ResponseEntity.notFound().build();
         }
     }
+
+
+//    @Override
+//    public ResponseEntity<Object> updateApproval(Long approvalId, ApprovalModel approvalModel) {
+//        Optional<ApprovalEntity> optionalApproval = approvalRepository.findById(approvalId);
+//        if(optionalApproval.isPresent()) {
+//            ApprovalEntity existingApproval = optionalApproval.get();
+//            existingApproval.setApplicant(approvalModel.getApplicant());
+//            existingApproval.setCircular(approvalModel.getCircular());
+//            existingApproval.setApproved(approvalModel.isApproved()); // apply can be approved from here
+//
+//            approvalRepository.save(existingApproval);
+//            return ResponseEntity.ok(existingApproval);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
     @Override
     public ResponseEntity<Object> deleteApproval(Long approvalId) {

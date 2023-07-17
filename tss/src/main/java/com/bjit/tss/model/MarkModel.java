@@ -1,24 +1,20 @@
-package com.bjit.tss.entity;
+package com.bjit.tss.model;
 
+import com.bjit.tss.entity.ExamEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
-@Table(name="marks")
-public class MarkEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class MarkModel {
     private Long markId;
-    @OneToOne
-    @JoinColumn(name = "exam_id")
     private ExamEntity exam;
     private String circular;
     private Long applicantId;
