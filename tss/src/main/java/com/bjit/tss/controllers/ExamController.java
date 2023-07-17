@@ -18,12 +18,12 @@ public class ExamController {
         return examService.createExam(examModel);
     }
 
-    @PutMapping("/{examCode}")
+    @PutMapping("/code/{examCode}")
     public ResponseEntity<Object> updateExamByExamCode(@PathVariable Long examCode, @RequestBody ExamModel examModel) {
         return examService.updateExamByExamCode(examCode, examModel);
     }
 
-    @DeleteMapping("/{examCode}")
+    @DeleteMapping("/code/{examCode}")
     public ResponseEntity<Object> deleteExamByExamCode(@PathVariable Long examCode) {
         return examService.deleteExamByExamCode(examCode);
     }
