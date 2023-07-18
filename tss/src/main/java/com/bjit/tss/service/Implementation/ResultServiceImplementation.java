@@ -25,7 +25,7 @@ public class ResultServiceImplementation implements ResultService {
     private final MarkRepository markRepository;
 
     @Override
-    public ResponseEntity<Object> saveResult(ResultModel resultModel) {
+    public ResponseEntity<Object> saveResult(ResultModel resultModel) {  //autosave
         List<MarkEntity> markEntities = markRepository.findAll();
 
         if (markEntities.isEmpty()) {
@@ -65,37 +65,6 @@ public class ResultServiceImplementation implements ResultService {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedResults);
     }
 
-
-//    @Override
-//    public ResponseEntity<Object> saveResult(ResultModel resultModel) {
-//        Long applicantId = resultModel.getApplicantId();
-//
-//        // Retrieve all marks by applicantId from MarkEntity
-//        List<MarkEntity> markEntities = markRepository.findByApplicantId(applicantId);
-//
-//        if (markEntities.size() < 1) {
-//            return ResponseEntity.badRequest().body("No result is found for this ID: " + applicantId);
-//        } else if (markEntities.size() < 2) {
-//            return ResponseEntity.badRequest().body("At least 2 marks are required to calculate the result");
-//        }
-//
-//        // Calculate the sum of marks
-//        double sum = markEntities.stream()
-//                .mapToDouble(MarkEntity::getMark)
-//                .sum();
-//
-//        // Get the circular title from the first mark entity
-//        String circularTitle = markEntities.get(0).getCircular();
-//
-//        ResultEntity resultEntity = new ResultEntity();
-//        resultEntity.setScore(sum);
-//        resultEntity.setApplicantId(applicantId);
-//        resultEntity.setCircularTitle(circularTitle);
-//
-//        ResultEntity savedResult = resultRepository.save(resultEntity);
-//
-//        return ResponseEntity.status(HttpStatus.CREATED).body(savedResult);
-//    }
 
     @Override
     public ResponseEntity<Object> updateResult(Long resultId, ResultModel resultModel) {
