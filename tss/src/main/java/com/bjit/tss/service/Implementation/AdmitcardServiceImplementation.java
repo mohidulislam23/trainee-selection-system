@@ -60,30 +60,59 @@ public class AdmitcardServiceImplementation implements AdmitcardService {
 
     @Override
     public ResponseEntity<Object> createAdmitcard(AdmitcardModel admitcardModel) {
-        // Retrieve the ApprovalEntity using candidateId from admitcardModel
-        Optional<ApprovalEntity> optionalApproval = approvalRepository.findById(admitcardModel.getCandidateId().getApprovalId());
-        if (optionalApproval.isPresent()) {
-            ApprovalEntity approvalEntity = optionalApproval.get();
+        // Retrieve all approved approvals
+        List<ApprovalEntity> approvedApprovals = approvalRepository.findByIsApprovedTrue();
 
-            // Check if the approval is approved
-            if (approvalEntity.isApproved()) {
-                AdmitcardEntity admitcardEntity = new AdmitcardEntity();
-                admitcardEntity.setCandidateId(approvalEntity);
-
-                // Generate serial number (assuming it's system-generated)
-                //Long generatedSerialNumber = generateSerialNumber(); //UUID based
-                Long generatedSerialNumber = generateSerialNumberSerially();  //Sequence based
-                admitcardEntity.setSerialNumber(generatedSerialNumber);
-
-                AdmitcardEntity savedAdmitcard = admitcardRepository.save(admitcardEntity);
-                return ResponseEntity.status(HttpStatus.CREATED).body(savedAdmitcard);
-            } else {
-                return ResponseEntity.badRequest().body("Approval is not yet approved.");
-            }
-        } else {
-            return ResponseEntity.notFound().build();
+        if (approvedApprovals.isEmpty()) {
+            return ResponseEntity.badRequest().body("No approved approvals found.");
         }
+
+        List<AdmitcardEntity> admitcards = new ArrayList<>();
+
+        for (ApprovalEntity approvalEntity : approvedApprovals) {
+            AdmitcardEntity admitcardEntity = new AdmitcardEntity();
+            admitcardEntity.setCandidateId(approvalEntity);
+
+            // Generate serial number (assuming it's system-generated)
+            // Long generatedSerialNumber = generateSerialNumber(); // UUID based
+            Long generatedSerialNumber = generateSerialNumberSerially(); // Sequence based
+            admitcardEntity.setSerialNumber(generatedSerialNumber);
+
+            admitcards.add(admitcardEntity);
+        }
+
+        List<AdmitcardEntity> savedAdmitcards = admitcardRepository.saveAll(admitcards);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedAdmitcards);
     }
+
+
+
+//    @Override
+//    public ResponseEntity<Object> createAdmitcard(AdmitcardModel admitcardModel) {
+//        // Retrieve the ApprovalEntity using candidateId from admitcardModel
+//        Optional<ApprovalEntity> optionalApproval = approvalRepository.findById(admitcardModel.getCandidateId().getApprovalId());
+//        if (optionalApproval.isPresent()) {
+//            ApprovalEntity approvalEntity = optionalApproval.get();
+//
+//            // Check if the approval is approved
+//            if (approvalEntity.isApproved()) {
+//                AdmitcardEntity admitcardEntity = new AdmitcardEntity();
+//                admitcardEntity.setCandidateId(approvalEntity);
+//
+//                // Generate serial number (assuming it's system-generated)
+//                //Long generatedSerialNumber = generateSerialNumber(); //UUID based
+//                Long generatedSerialNumber = generateSerialNumberSerially();  //Sequence based
+//                admitcardEntity.setSerialNumber(generatedSerialNumber);
+//
+//                AdmitcardEntity savedAdmitcard = admitcardRepository.save(admitcardEntity);
+//                return ResponseEntity.status(HttpStatus.CREATED).body(savedAdmitcard);
+//            } else {
+//                return ResponseEntity.badRequest().body("Approval is not yet approved.");
+//            }
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
 
     @Override
@@ -199,6 +228,7 @@ public class AdmitcardServiceImplementation implements AdmitcardService {
             document.add(new Paragraph("Exam Name: " + examName));
             document.add(new Paragraph("Candidate Name: " + candidateName));
             document.add(new Paragraph("Serial Number: " + serialNumber));
+            document.add(new Paragraph("Details QR Code: \n"));
 
 
             // Generate QR code containing information about the applicant

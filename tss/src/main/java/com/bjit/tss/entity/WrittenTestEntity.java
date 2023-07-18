@@ -20,4 +20,5 @@ public class WrittenTestEntity {
     private Long hiddenCode;
     private Long applicantId;
     private Double mark;
+    private String circular;
 }

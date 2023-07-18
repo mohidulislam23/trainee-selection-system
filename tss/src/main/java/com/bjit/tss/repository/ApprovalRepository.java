@@ -11,4 +11,6 @@ import java.util.List;
 public interface ApprovalRepository extends JpaRepository<ApprovalEntity, Long> {
     List<ApprovalEntity> findByApplicant_ApplicantIdAndCircularNot(Long applicantId, CircularEntity circular);
 
+    List<ApprovalEntity> findByIsApprovedTrue();
+
 }

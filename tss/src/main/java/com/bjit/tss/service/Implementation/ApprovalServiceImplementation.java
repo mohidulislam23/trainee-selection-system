@@ -45,8 +45,8 @@ public class ApprovalServiceImplementation implements ApprovalService {
                         .body("Applicant is already approved for another circular.");
             }
 
-            existingApproval.setApplicant(approvalModel.getApplicant());
-            existingApproval.setCircular(approvalModel.getCircular());
+            //existingApproval.setApplicant(approvalModel.getApplicant());
+            //existingApproval.setCircular(approvalModel.getCircular());
             existingApproval.setApproved(approvalModel.isApproved());
 
             approvalRepository.save(existingApproval);

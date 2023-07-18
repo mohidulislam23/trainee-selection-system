@@ -2,6 +2,7 @@ package com.bjit.tss.service;
 
 import com.bjit.tss.model.WrittenTestModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface WrittenTestService {
     ResponseEntity<Object> getWrittenTestById(Long writtenTestId);
@@ -18,5 +19,6 @@ public interface WrittenTestService {
 
     ResponseEntity<Object> updateWrittenTest(Long hiddenCode, Double mark);
 
+    ResponseEntity<Object> uploadWrittenTestByHiddenCode(MultipartFile file);
 }
 

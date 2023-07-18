@@ -14,4 +14,5 @@ public class WrittenTestModel {
     private Long hiddenCode;
     private Long applicantId;
     private Double mark;
+    private String circular;
 }
