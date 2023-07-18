@@ -54,6 +54,10 @@ dependencies {
 //	another mail library
 	implementation group: 'javax.mail', name: 'javax.mail-api', version: '1.6.2'
 
+//	file Upload
+	implementation 'org.apache.poi:poi:5.0.0'
+	implementation 'org.apache.poi:poi-ooxml:5.0.0'
+
 }
 
 tasks.named('test') {

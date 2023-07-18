@@ -3,8 +3,16 @@ package com.bjit.tss.controllers;
 import com.bjit.tss.model.WrittenTestModel;
 import com.bjit.tss.service.WrittenTestService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 @RestController
 @RequestMapping("/written")
@@ -47,4 +55,11 @@ public class WrittenTestController {
     public ResponseEntity<Object> updateWrittenTestByHiddenCode(@PathVariable Long hiddenCode, @RequestBody WrittenTestModel writtenTestModel) {
         return writtenTestService.updateWrittenTest(hiddenCode, writtenTestModel.getMark());
     }
+
+    @PutMapping("/upload")
+    public ResponseEntity<Object> updateWrittenTestByHiddenCode(@RequestParam("file") MultipartFile file) {
+        return writtenTestService.uploadWrittenTestByHiddenCode(file);
+    }
+
+
 }

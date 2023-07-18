@@ -7,12 +7,18 @@ import com.bjit.tss.repository.AdmitcardRepository;
 import com.bjit.tss.repository.WrittenTestRepository;
 import com.bjit.tss.service.WrittenTestService;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
@@ -22,6 +28,7 @@ public class WrittenTestServiceImplementation implements WrittenTestService {
 
     private final WrittenTestRepository writtenTestRepository;
     private final AdmitcardRepository admitCardRepository;
+
 
     @Override
     public ResponseEntity<Object> getWrittenTestById(Long writtenTestId) {
@@ -48,6 +55,7 @@ public class WrittenTestServiceImplementation implements WrittenTestService {
         writtenTest.setHiddenCode(writtenTestModel.getHiddenCode());
         writtenTest.setApplicantId(writtenTestModel.getApplicantId());
         writtenTest.setMark(writtenTestModel.getMark());
+        writtenTest.setCircular(writtenTest.getCircular());
 
         WrittenTestEntity savedWrittenTest = writtenTestRepository.save(writtenTest);
 
@@ -85,6 +93,7 @@ public class WrittenTestServiceImplementation implements WrittenTestService {
         writtenTestModel.setHiddenCode(writtenTestEntity.getHiddenCode());
         writtenTestModel.setApplicantId(writtenTestEntity.getApplicantId());
         writtenTestModel.setMark(writtenTestEntity.getMark());
+        writtenTestModel.setCircular(writtenTestEntity.getCircular());
         return writtenTestModel;
     }
 
@@ -117,6 +126,8 @@ public class WrittenTestServiceImplementation implements WrittenTestService {
             writtenTest.setApplicantId(applicantId);
             writtenTest.setHiddenCode(hiddenCode);
             writtenTest.setMark(0.0);
+            writtenTest.setCircular(admitCard.getCandidateId().getCircular().getTitle());
+
             // Set other properties of WrittenTestEntity as required
 
             // Save the WrittenTestEntity
@@ -152,5 +163,60 @@ public class WrittenTestServiceImplementation implements WrittenTestService {
         return new ResponseEntity<>(updatedWrittenTestModel, HttpStatus.OK);
     }
 
+
+
+    @Override
+    public ResponseEntity<Object> uploadWrittenTestByHiddenCode(MultipartFile file) {
+        try {
+            // Load the Excel file
+            Workbook workbook = new XSSFWorkbook(file.getInputStream());
+
+            // Get the first sheet
+            Sheet sheet = workbook.getSheetAt(0);
+
+            // Iterate over rows and update the written tests
+            List<WrittenTestModel> updatedWrittenTests = new ArrayList<>();
+
+            for (Row row : sheet) {
+                // Read hiddenCode and mark from Excel
+                Long hiddenCode = readHiddenCodeFromExcel(row);
+                Double mark = readMarkFromExcel(row);
+
+                if (hiddenCode != null && mark != null) {
+                    // Call the service method to update the written test
+                    updateWrittenTest(hiddenCode, mark);
+
+                    // Retrieve the updated written test and add it to the list
+                    WrittenTestEntity updatedWrittenTest = writtenTestRepository.findByHiddenCode(hiddenCode);
+                    if (updatedWrittenTest != null) {
+                        WrittenTestModel updatedWrittenTestModel = convertToModel(updatedWrittenTest);
+                        updatedWrittenTests.add(updatedWrittenTestModel);
+                    }
+                }
+            }
+
+            return new ResponseEntity<>(updatedWrittenTests, HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Failed to process the Excel file", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    private Long readHiddenCodeFromExcel(Row row) {
+        Cell cell = row.getCell(0); // Assuming the hiddenCode is in the first column
+        if (cell != null && cell.getCellType() == CellType.NUMERIC) {
+            return (long) cell.getNumericCellValue();
+        }
+        return null; // HiddenCode not found or not a valid numeric value
+    }
+
+    private Double readMarkFromExcel(Row row) {
+        Cell cell = row.getCell(1); // Assuming the mark is in the second column
+        if (cell != null && cell.getCellType() == CellType.NUMERIC) {
+            return cell.getNumericCellValue();
+        }
+        return null; // Mark not found or not a valid numeric value
+    }
 
 }
