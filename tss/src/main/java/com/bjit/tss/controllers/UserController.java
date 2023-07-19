@@ -6,6 +6,7 @@ import com.bjit.tss.model.UserRequestModel;
 import com.bjit.tss.service.Implementation.AuthenticationService;
 import com.bjit.tss.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,7 @@ public class UserController {
     public ResponseEntity<Object> register(@RequestBody UserRequestModel requestModel) {
         return userService.register(requestModel);
     }
+
 
     private final AuthenticationService authenticationService;
 
