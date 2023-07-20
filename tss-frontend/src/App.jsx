@@ -8,6 +8,13 @@ import CircularShow from './components/circular/CircularShow';
 import ApplyPage from './pages/apply/ApplyPage';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ShowAllApplicant from './pages/applicant/ShowAllApplicant';
+import ShowAndSendMail from './components/mail/ShowAndSendMail';
+import CreateMail from './components/mail/CreateMail';
+import Result from './pages/result/Result';
+import Result2 from './pages/result/Result2';
+import CreateExam from './pages/exams/CreateExam';
+import UploadMark from './pages/marks/UploadMark';
+import ApplicantRegister from './pages/applicant/ApplicantRegister';
 
 const App = () => {
   return (
@@ -20,19 +27,25 @@ const App = () => {
         <p>This is the main content of the app.</p>
       </main>
 
-      <ShowAllApplicant />
+      <ApplicantRegister />
+
+      {/* <UploadMark /> */}
+
+      {/* <CreateExam /> */}
+
+      {/* <Result /> */}
+      
+      {/* <CreateMail /> */}
+      {/* <ShowAndSendMail /> */}
+
+      {/* <ShowAllApplicant /> */}
 
       <Routes >
         <Route path="/circular" element={<CircularShow></CircularShow>}></Route>
-        {/* <Route path="/home" element={<Home></Home>}></Route>
-        <Route path="/createBatch" element={<BatchCreate></BatchCreate>}></Route>
-        <Route path="/allBatch" element={<AllBatch></AllBatch>}></Route>
-        <Route path="/traineeRegister" element={<Trainee></Trainee>}></Route>
-        <Route path="/trainerRegister" element={<Trainer></Trainer>}></Route> */}
       </Routes>
 
-      {/* <RegistrationForm />
-      <LoginForm /> */}
+      {/* <RegistrationForm /> */}
+      {/* <LoginForm /> */}
       <Footer />
 
 
