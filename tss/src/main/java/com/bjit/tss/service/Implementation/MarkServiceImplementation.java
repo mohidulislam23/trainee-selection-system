@@ -25,82 +25,6 @@ public class MarkServiceImplementation implements MarkService {
     private final ExamRepository examRepository;
     private final AdmitcardRepository admitcardRepository;
 
-//    @Override
-//    public ResponseEntity<Object> saveMark(MarkModel markModel) {
-//        Long examId = markModel.getExam().getExamId();
-//        Optional<ExamEntity> examEntityOptional = examRepository.findById(examId);
-//
-//        if (examEntityOptional.isEmpty()) {
-//            throw new NotFoundException("Exam not found");
-//        }
-//
-//        ExamEntity examEntity = examEntityOptional.get();
-//
-//        Long applicantId = markModel.getApplicantId();
-//
-//        // Check if an admit card exists for the given applicant
-//        Optional<AdmitcardEntity> admitCardOptional = admitcardRepository.findByCandidateId_ApprovalId_ApplicantId(applicantId);
-//        if (admitCardOptional.isEmpty()) {
-//            throw new NotFoundException("Admit card not found for the applicant");
-//        }
-//
-//        AdmitcardEntity admitCardEntity = admitCardOptional.get();
-//        String circular = admitCardEntity.getCandidateId().getCircular().getTitle();
-//
-//        // Check if a mark already exists for the given exam and applicant
-//        Optional<MarkEntity> existingMarkOptional = markRepository.findByExamAndApplicantId(examEntity, applicantId);
-//        if (existingMarkOptional.isPresent()) {
-//            MarkEntity existingMark = existingMarkOptional.get();
-//            return ResponseEntity.status(HttpStatus.CONFLICT)
-//                    .body("A mark already exists for the given exam and applicant. Existing mark: " + existingMark);
-//        }
-//
-//        MarkEntity markEntity = new MarkEntity();
-//        markEntity.setExam(examEntity);
-//        markEntity.setCircular(circular);
-//        markEntity.setApplicantId(applicantId);
-//        markEntity.setMark(markModel.getMark());
-//
-//        MarkEntity savedMark = markRepository.save(markEntity);
-//
-//        return ResponseEntity.status(HttpStatus.CREATED).body(savedMark);
-//    }
-
-
-//    @Override
-//    public ResponseEntity<Object> saveMark(MarkModel markModel) {
-//        Long examId = markModel.getExam().getExamId();
-//        Optional<ExamEntity> examEntityOptional = examRepository.findById(examId);
-//
-//        if (examEntityOptional.isEmpty()) {
-//            throw new NotFoundException("Exam not found");
-//        }
-//
-//        ExamEntity examEntity = examEntityOptional.get();
-//
-//        Long applicantId = markModel.getApplicantId();
-//
-//        // Check if an admit card exists for the given applicant
-//        Optional<AdmitcardEntity> admitCardOptional = admitcardRepository.findByCandidateId_ApprovalId_Applicant_ApplicantId(applicantId);
-//        if (admitCardOptional.isEmpty()) {
-//            throw new NotFoundException("Admit card not found for the applicant");
-//        }
-//
-//        AdmitcardEntity admitCardEntity = admitCardOptional.get();
-//        String circular = admitCardEntity.getCandidateId().getCircular().getTitle();
-//
-//        MarkEntity markEntity = new MarkEntity();
-//        markEntity.setExam(examEntity);
-//        markEntity.setCircular(circular);
-//        markEntity.setApplicantId(applicantId);
-//        markEntity.setMark(markModel.getMark());
-//
-//        MarkEntity savedMark = markRepository.save(markEntity);
-//
-//        return ResponseEntity.status(HttpStatus.CREATED).body(savedMark);
-//    }
-
-
     @Override
     public ResponseEntity<Object> saveMark(MarkModel markModel) {
         Long examId = markModel.getExam().getExamId();
@@ -141,10 +65,10 @@ public class MarkServiceImplementation implements MarkService {
         if (markEntityOptional.isPresent()) {
             MarkEntity markEntity = markEntityOptional.get();
 
-            ExamEntity examEntity = examRepository.findById(markModel.getExam().getExamId())
-                    .orElseThrow(() -> new NotFoundException("Exam not found")); //test purpose, it should not be update
+            //ExamEntity examEntity = examRepository.findById(markModel.getExam().getExamId())
+                    //.orElseThrow(() -> new NotFoundException("Exam not found")); //test purpose, it should not be update
 
-            markEntity.setExam(examEntity); //test purpose, it should not be update
+            //markEntity.setExam(examEntity); //test purpose, it should not be update
             markEntity.setCircular(markModel.getCircular());
             markEntity.setApplicantId(markModel.getApplicantId());
             markEntity.setMark(markModel.getMark());

@@ -1,0 +1,186 @@
+// /* ShowAllMail.scss */
+
+// .mail-list {
+//     display: flex;
+//     flex-wrap: wrap;
+//     gap: 20px;
+//   }
+  
+//   .mail-card {
+//     border: 1px solid #ccc;
+//     border-radius: 8px;
+//     padding: 20px;
+//     width: 300px;
+//     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+//     background-color: #fff;
+//   }
+  
+//   .mail-card h3 {
+//     margin: 0;
+//     font-size: 18px;
+//     color: #333;
+//   }
+  
+//   .mail-card p {
+//     margin: 10px 0;
+//     color: #555;
+//   }
+  
+//   .mail-card .timestamp {
+//     font-size: 12px;
+//     color: #888;
+//   }
+  
+// ShowAndSendMail.scss
+
+// .mail-list {
+//     display: flex;
+//     flex-wrap: wrap;
+//     gap: 20px;
+  
+//     .mail-card {
+//       background-color: #f4f4f4;
+//       padding: 20px;
+//       border-radius: 8px;
+//       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+//       width: 300px;
+  
+//       h3 {
+//         font-size: 1.2rem;
+//         margin-bottom: 10px;
+//       }
+  
+//       p {
+//         margin-bottom: 10px;
+//       }
+  
+//       .timestamp {
+//         font-size: 0.8rem;
+//         color: #888;
+//       }
+  
+//       button {
+//         margin-top: 10px;
+//         background-color: #007bff;
+//         color: #fff;
+//         padding: 8px 16px;
+//         border: none;
+//         border-radius: 4px;
+//         cursor: pointer;
+//         transition: background-color 0.3s ease;
+  
+//         &:hover {
+//           background-color: #0056b3;
+//         }
+//       }
+//     }
+  
+//     .form {
+//       margin-top: 20px;
+//       display: flex;
+//       flex-direction: column;
+//       gap: 10px;
+  
+//       input {
+//         padding: 8px;
+//         border: 1px solid #ccc;
+//         border-radius: 4px;
+//       }
+  
+//       button {
+//         background-color: #28a745;
+//         color: #fff;
+//         padding: 8px 16px;
+//         border: none;
+//         border-radius: 4px;
+//         cursor: pointer;
+//         transition: background-color 0.3s ease;
+  
+//         &:hover {
+//           background-color: #1a682c;
+//         }
+//       }
+//     }
+//   }
+  
+
+.mail-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 20px;
+}
+
+.mail-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  width: 300px;
+
+  h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+
+  p {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .timestamp {
+    font-size: 12px;
+    color: #888;
+  }
+
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+}
+
+.form {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+
+  .close-button {
+    align-self: flex-end;
+    font-size: 18px;
+    background-color: rgb(212, 21, 21); //transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+
+  button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+}
