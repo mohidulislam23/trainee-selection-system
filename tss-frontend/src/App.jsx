@@ -1,12 +1,13 @@
 import './App.css';
 import React from 'react';
 // import { BrowserRouter as Router,Route } from 'react-router-dom'; // Import Router, Switch, and Route
+// import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Footer from './components/footer/Footer';
 import RegistrationForm from './pages/registration/RegistrationForm';
 import LoginForm from './pages/login/LoginForm';
 import CircularShow from './pages/circular/CircularShow';
 import ApplyPage from './pages/apply/ApplyPage';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Router, Routes } from 'react-router-dom';
 import ShowAllApplicant from './pages/applicant/ShowAllApplicant';
 import ShowAndSendMail from './pages/mail/ShowAndSendMail';
 import CreateMail from './pages/mail/CreateMail';
@@ -22,53 +23,93 @@ import GetAdmitCard from './pages/admitcard/GetAdmitCard';
 import NotificationProp from './pages/notification/NotificationProp';
 import Approve from './pages/approve/Approve';
 import UploadWrittenMark from './pages/marks/UploadWrittenMark';
+import Header from './components/header/Header';
+import AdminNav from './components/navbar/AdminNav';
+import Home from './pages/home/Home';
+import ApplicantNav from './components/navbar/ApplicantNav';
 
 const App = () => {
   return (
     <div>
 
+
+
       <header>
-        <h1>Trainee Selection System</h1>
+        <Header />
+        <AdminNav />
+        <ApplicantNav />
+
+
+
+
       </header>
-      <main>
-        <p>This is the main content of the app.</p>
+
+
+
+      <main style={{
+        backgroundColor: '', padding: 80
+        
+      }}>
+
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route path="/create-circular" element={<CreateCircular />} />
+          <Route path="/circular-show" element={<CircularShow />} />
+          <Route path="/upload-mark" element={<UploadMark />} />
+          <Route path="/create-exam" element={<CreateExam />} />
+          <Route path="/result" element={<Result />} />
+          <Route path="/create-mail" element={<CreateMail />} />
+          <Route path="/show-send-mail" element={<ShowAndSendMail />} />
+          <Route path="/show-all-applicant" element={<ShowAllApplicant />} />
+          <Route path="/approve" element={<Approve />} />
+
+          <Route path="/" element={<Home />} />
+          <Route path="/registration-form" element={<RegistrationForm />} />
+          <Route path="/login-form" element={<LoginForm />} />
+          <Route path="/applicant-register" element={<ApplicantRegister />} />
+          <Route path="/apply" element={<Apply />} />
+          <Route path="/notification" element={<NotificationProp applicantId={3} />} />
+        </Routes>
+
+
+        {/* <p>This is the main content of the app.</p> */}
       </main>
+      <footer><Footer /></footer>
 
 
       {/* Admin work */}
       {/* ---------------------------------------- */}
-      {/* <CreateCircular /> */}
-      {/* <CircularShow /> */}
+      {/* <CreateCircular />
+      <CircularShow />
 
-      {/* <UploadMark /> */}
+      <UploadMark />
 
-      {/* <CreateExam /> */}
+      <CreateExam />
 
-      {/* <Result /> */}
+      <Result />
 
-      {/* <CreateMail /> */}
-      {/* <ShowAndSendMail /> */}
+      <CreateMail />
+      <ShowAndSendMail />
 
-      {/* <ShowAllApplicant /> */}
+      <ShowAllApplicant />
 
-      {/* <Approve /> */}
+      <Approve /> */}
 
 
 
       {/* Applicant work */}
       {/* ---------------------------------------- */}
 
-      {/* <RegistrationForm /> */}
+      {/* <RegistrationForm />
 
-      {/* <LoginForm /> */}
 
-      {/* <ApplicantRegister /> */}
+      <ApplicantRegister />
 
-      {/* <Apply /> */}
+      <Apply />
 
-      {/* <NotificationProp applicantId={2}/> */}
+      <NotificationProp applicantId={2}/> */}
       {/* <NotificationProp applicantId={5} /> */}
-      
+
 
       {/* <GetAdmitCard /> */}
 
@@ -76,15 +117,15 @@ const App = () => {
       {/* Evaluator work */}
       {/* ---------------------------------------- */}
 
-      <UploadWrittenMark />
+      {/* <UploadWrittenMark /> */}
 
 
-      <Routes >
+      {/* <Routes >
         <Route path="/circular" element={<CircularShow></CircularShow>}></Route>
-      </Routes>
+      </Routes> */}
 
-      
-      <Footer />
+
+
 
 
     </div>
