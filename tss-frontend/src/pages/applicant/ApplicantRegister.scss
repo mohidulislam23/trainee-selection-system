@@ -33,15 +33,18 @@
       textarea {
         resize: vertical;
       }
-  
-      button[type="submit"] {
-        background-color: #007bff;
+      
+      button {
         color: #fff;
         padding: 10px 15px;
         font-size: 16px;
         border: none;
         border-radius: 3px;
         cursor: pointer;
+      }
+  
+      button[type="submit"] {
+        background-color: #007bff;
       }
   
       .success-message {

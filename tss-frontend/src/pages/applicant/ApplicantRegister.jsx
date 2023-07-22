@@ -104,7 +104,7 @@ const ApplicantRegister = () => {
 
             // Define the content to be included in the PDF as a table
             const tableData = [
-                ['Applicant ID', applicantId],
+                ['Applicant ID', btoa(applicantId) ],
                 ['Full Name', `${firstName} ${lastName}`],
                 ['Email', email],
                 ['Contact Number', contactNumber],
@@ -248,7 +248,7 @@ const ApplicantRegister = () => {
                         onChange={(e) => setPassingYear(e.target.value)}
                         min="1980"
                         max="2023"
-                    // Passing year is optional, so it's not required
+                        required
                     />
                 </div>
                 <div>

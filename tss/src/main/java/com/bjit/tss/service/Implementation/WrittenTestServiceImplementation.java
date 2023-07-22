@@ -118,19 +118,14 @@ public class WrittenTestServiceImplementation implements WrittenTestService {
             Long applicantId = admitCard.getCandidateId().getApplicant().getApplicantId();
 
             // Generate hiddenCode
-            //AtomicLong counter = new AtomicLong(10000);
             Long hiddenCode = generateSerialNumberSerially();
 
-            // Create WrittenTestEntity
             WrittenTestEntity writtenTest = new WrittenTestEntity();
             writtenTest.setApplicantId(applicantId);
             writtenTest.setHiddenCode(hiddenCode);
             writtenTest.setMark(0.0);
             writtenTest.setCircular(admitCard.getCandidateId().getCircular().getTitle());
 
-            // Set other properties of WrittenTestEntity as required
-
-            // Save the WrittenTestEntity
             WrittenTestEntity savedWrittenTest = writtenTestRepository.save(writtenTest);
             WrittenTestModel savedWrittenTestModel = convertToModel(savedWrittenTest);
             createdWrittenTests.add(savedWrittenTestModel);
@@ -148,16 +143,13 @@ public class WrittenTestServiceImplementation implements WrittenTestService {
 
     @Override
     public ResponseEntity<Object> updateWrittenTest(Long hiddenCode, Double mark) {
-        // Check if hiddenCode is valid
         WrittenTestEntity existingWrittenTest = writtenTestRepository.findByHiddenCode(hiddenCode);
         if (existingWrittenTest == null) {
             return new ResponseEntity<>("Invalid hiddenCode", HttpStatus.NOT_FOUND);
         }
 
-        // Update the mark of the existingWrittenTest
         existingWrittenTest.setMark(mark);
 
-        // Save the updated WrittenTestEntity
         WrittenTestEntity updatedWrittenTest = writtenTestRepository.save(existingWrittenTest);
         WrittenTestModel updatedWrittenTestModel = convertToModel(updatedWrittenTest);
         return new ResponseEntity<>(updatedWrittenTestModel, HttpStatus.OK);
@@ -200,6 +192,16 @@ public class WrittenTestServiceImplementation implements WrittenTestService {
             e.printStackTrace();
             return new ResponseEntity<>("Failed to process the Excel file", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Override
+    public ResponseEntity<Object> getWrittenTestByApplicantId(Long applicantId) {
+        WrittenTestEntity writtenTest = (WrittenTestEntity) writtenTestRepository.findByApplicantId(applicantId).orElse(null);
+        if (writtenTest == null) {
+            return new ResponseEntity<>("Written test not found", HttpStatus.NOT_FOUND);
+        }
+        WrittenTestModel writtenTestModel = convertToModel(writtenTest);
+        return new ResponseEntity<>(writtenTestModel, HttpStatus.OK);
     }
 
 

@@ -39,7 +39,7 @@ const RegistrationForm = () => {
 
     return (
         <div className="registration-form">
-            <h2>Sign Up</h2>
+            <h2>SignUp</h2>
             {message && <div className={`message ${message.includes('successful') ? 'success' : 'error'}`}>{message}</div>}
             <form onSubmit={handleSubmit}>
                 <div className="form-group">

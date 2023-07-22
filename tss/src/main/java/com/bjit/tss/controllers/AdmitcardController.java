@@ -33,14 +33,14 @@ public class AdmitcardController {
         return admitcardService.getAllAdmitcards();
     }
 
-    @GetMapping("/{admitcardId}")
-    public ResponseEntity<Object> getAdmitcardById(@PathVariable Long admitcardId) {
-        return admitcardService.getAdmitcardById(admitcardId);
+    @GetMapping("/{applicantId}")
+    public ResponseEntity<Object> getAdmitcardById(@PathVariable Long applicantId) {
+        return admitcardService.getAdmitcardById(applicantId);
     }
 
-    @GetMapping("/{admitcardId}/pdf")
-    public ResponseEntity<Object> generateAdmitcardPdf(@PathVariable Long admitcardId) {
-        return admitcardService.generateAdmitcardPdf(admitcardId);
+    @GetMapping("/{applicantId}/pdf")
+    public ResponseEntity<Object> generateAdmitcardPdf(@PathVariable Long applicantId) {
+        return admitcardService.generateAdmitcardPdf(applicantId);
     }
 }
 

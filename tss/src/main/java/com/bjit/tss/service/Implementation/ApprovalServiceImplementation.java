@@ -20,19 +20,33 @@ public class ApprovalServiceImplementation implements ApprovalService {
 
     @Override
     public ResponseEntity<Object> createApproval(ApprovalModel approvalModel) {
+        // Check if the applicant has already applied for the circular
+        Optional<ApprovalEntity> existingApproval = approvalRepository.findByApplicantAndCircular(
+                approvalModel.getApplicant(),
+                approvalModel.getCircular()
+        );
+
+        if (existingApproval.isPresent()) {
+            // An application already exists for the given applicant and circular
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Applicant has already applied for this circular");
+        }
+
+        // If no existing application found, create a new approval
         ApprovalEntity approvalEntity = new ApprovalEntity();
         approvalEntity.setApplicant(approvalModel.getApplicant());
         approvalEntity.setCircular(approvalModel.getCircular());
-        approvalEntity.setApproved(false); // by dafault it is false
+        approvalEntity.setApproved(false); // by default it is false
 
         ApprovalEntity savedApproval = approvalRepository.save(approvalEntity);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedApproval);
     }
 
+
     @Override
     public ResponseEntity<Object> updateApproval(Long approvalId, ApprovalModel approvalModel) {
         Optional<ApprovalEntity> optionalApproval = approvalRepository.findById(approvalId);
-        if (optionalApproval.isPresent()) {
+        Optional<ApprovalEntity> checkApproval = approvalRepository.findByApplicant_ApplicantIdAndCircular_CircularId(approvalModel.getApplicant().getApplicantId(), approvalModel.getCircular().getCircularId());
+        if (optionalApproval.isPresent() && checkApproval.isPresent()) {
             ApprovalEntity existingApproval = optionalApproval.get();
 
             // Check if the applicant is already approved for another circular
@@ -45,8 +59,6 @@ public class ApprovalServiceImplementation implements ApprovalService {
                         .body("Applicant is already approved for another circular.");
             }
 
-            //existingApproval.setApplicant(approvalModel.getApplicant());
-            //existingApproval.setCircular(approvalModel.getCircular());
             existingApproval.setApproved(approvalModel.isApproved());
 
             approvalRepository.save(existingApproval);
@@ -56,22 +68,6 @@ public class ApprovalServiceImplementation implements ApprovalService {
         }
     }
 
-
-//    @Override
-//    public ResponseEntity<Object> updateApproval(Long approvalId, ApprovalModel approvalModel) {
-//        Optional<ApprovalEntity> optionalApproval = approvalRepository.findById(approvalId);
-//        if(optionalApproval.isPresent()) {
-//            ApprovalEntity existingApproval = optionalApproval.get();
-//            existingApproval.setApplicant(approvalModel.getApplicant());
-//            existingApproval.setCircular(approvalModel.getCircular());
-//            existingApproval.setApproved(approvalModel.isApproved()); // apply can be approved from here
-//
-//            approvalRepository.save(existingApproval);
-//            return ResponseEntity.ok(existingApproval);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
 
     @Override
     public ResponseEntity<Object> deleteApproval(Long approvalId) {

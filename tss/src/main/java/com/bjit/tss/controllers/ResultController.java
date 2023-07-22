@@ -22,7 +22,6 @@ public class ResultController {
                     .body("Result has already been generated. Cannot generate again.");
         }
 
-        // Process the resultModel and save the result
         ResponseEntity<Object> response = resultService.saveResult(resultModel);
 
         // Set the flag to indicate that the result has been generated

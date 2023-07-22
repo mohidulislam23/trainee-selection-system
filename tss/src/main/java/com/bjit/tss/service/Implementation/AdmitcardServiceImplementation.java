@@ -32,6 +32,19 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
 
+//for pdf
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.property.HorizontalAlignment;
+import com.itextpdf.layout.property.TextAlignment;
+import com.itextpdf.layout.property.VerticalAlignment;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 //for QR Code
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.qrcode.QRCodeWriter;
@@ -59,7 +72,7 @@ public class AdmitcardServiceImplementation implements AdmitcardService {
 
 
     @Override
-    public ResponseEntity<Object> createAdmitcard(AdmitcardModel admitcardModel) {
+    public ResponseEntity<Object> createAdmitcard(AdmitcardModel admitcardModel) { //automatic
         // Retrieve all approved approvals
         List<ApprovalEntity> approvedApprovals = approvalRepository.findByIsApprovedTrue();
 
@@ -84,35 +97,6 @@ public class AdmitcardServiceImplementation implements AdmitcardService {
         List<AdmitcardEntity> savedAdmitcards = admitcardRepository.saveAll(admitcards);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedAdmitcards);
     }
-
-
-
-//    @Override
-//    public ResponseEntity<Object> createAdmitcard(AdmitcardModel admitcardModel) {
-//        // Retrieve the ApprovalEntity using candidateId from admitcardModel
-//        Optional<ApprovalEntity> optionalApproval = approvalRepository.findById(admitcardModel.getCandidateId().getApprovalId());
-//        if (optionalApproval.isPresent()) {
-//            ApprovalEntity approvalEntity = optionalApproval.get();
-//
-//            // Check if the approval is approved
-//            if (approvalEntity.isApproved()) {
-//                AdmitcardEntity admitcardEntity = new AdmitcardEntity();
-//                admitcardEntity.setCandidateId(approvalEntity);
-//
-//                // Generate serial number (assuming it's system-generated)
-//                //Long generatedSerialNumber = generateSerialNumber(); //UUID based
-//                Long generatedSerialNumber = generateSerialNumberSerially();  //Sequence based
-//                admitcardEntity.setSerialNumber(generatedSerialNumber);
-//
-//                AdmitcardEntity savedAdmitcard = admitcardRepository.save(admitcardEntity);
-//                return ResponseEntity.status(HttpStatus.CREATED).body(savedAdmitcard);
-//            } else {
-//                return ResponseEntity.badRequest().body("Approval is not yet approved.");
-//            }
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
 
 
     @Override
@@ -158,8 +142,12 @@ public class AdmitcardServiceImplementation implements AdmitcardService {
     }
 
     @Override
-    public ResponseEntity<Object> getAdmitcardById(Long admitcardId) {
-        Optional<AdmitcardEntity> optionalAdmitcard = admitcardRepository.findById(admitcardId);
+    public ResponseEntity<Object> getAdmitcardById(Long applicantId) {
+
+        Optional<AdmitcardEntity> optionalAdmitcard = admitcardRepository.findByApplicantId(applicantId);
+
+
+//        Optional<AdmitcardEntity> optionalAdmitcard = admitcardRepository.findById(admitcardId);
         if (optionalAdmitcard.isPresent()) {
             AdmitcardEntity admitcard = optionalAdmitcard.get();
             return ResponseEntity.ok(admitcard);
@@ -169,16 +157,14 @@ public class AdmitcardServiceImplementation implements AdmitcardService {
     }
 
     @Override
-    public ResponseEntity<Object> generateAdmitcardPdf(Long admitcardId) {
-        Optional<AdmitcardEntity> optionalAdmitcard = admitcardRepository.findById(admitcardId);
+    public ResponseEntity<Object> generateAdmitcardPdf(Long applicantId) {
+        Optional<AdmitcardEntity> optionalAdmitcard = admitcardRepository.findByApplicantId(applicantId);
         if (optionalAdmitcard.isPresent()) {
             AdmitcardEntity admitcard = optionalAdmitcard.get();
             // Logic to generate the Admit Card in PDF format
-            // PDF library such as iText, Apache PDFBox, or PDFKit to generate the PDF
 
-            // Implement the logic to generate the Admit Card PDF and return it as a response
 
-            // Example: Assuming you generate the PDF and store it in a byte array called 'pdfBytes'
+            // generate the PDF and store it in a byte array called 'pdfBytes'
             byte[] pdfBytes = generateAdmitcardPdfBytes(admitcard);
 
             // Return the PDF as a response
@@ -208,7 +194,7 @@ public class AdmitcardServiceImplementation implements AdmitcardService {
     /////////////////////////////////////////////////////////////////////////////////
 
 
-    private byte[] generateAdmitcardPdfBytes(AdmitcardEntity admitcard) {
+    private byte[] generateAdmitcardPdfBytes22(AdmitcardEntity admitcard) {
         // Generating a dummy PDF with the admit card details and QR code
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
              PdfDocument pdfDocument = new PdfDocument(new PdfWriter(outputStream));
@@ -224,7 +210,7 @@ public class AdmitcardServiceImplementation implements AdmitcardService {
             Long serialNumber = admitcard.getSerialNumber();
 
             // Add content to the PDF document
-            document.add(new Paragraph("Admit Card"));
+            document.add(new Paragraph("Admit Card\n"));
             document.add(new Paragraph("Exam Name: " + examName));
             document.add(new Paragraph("Candidate Name: " + candidateName));
             document.add(new Paragraph("Serial Number: " + serialNumber));
@@ -259,10 +245,91 @@ public class AdmitcardServiceImplementation implements AdmitcardService {
             return outputStream.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
-            // Handle the exception appropriately
         }
 
-        return null; // Return null if PDF generation fails
+        return null;
+    }
+
+    private byte[] generateAdmitcardPdfBytes(AdmitcardEntity admitcard) {
+        // Generating a dummy PDF with the admit card details and QR code
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             PdfDocument pdfDocument = new PdfDocument(new PdfWriter(outputStream));
+             Document document = new Document(pdfDocument)) {
+
+            // Retrieve the Exam name from circularId
+            String examName = admitcard.getCandidateId().getCircular().getTitle();
+
+            // Retrieve the candidate name
+            String candidateName = admitcard.getCandidateId().getApplicant().getFirstName() + " " + admitcard.getCandidateId().getApplicant().getLastName();
+
+            // Retrieve the serial number
+            Long serialNumber = admitcard.getSerialNumber();
+
+            // Add content to the PDF document
+            document.add(new Paragraph("Admit Card").setFontSize(20).setTextAlignment(TextAlignment.CENTER));
+
+            Table table = new Table(2); // Create a table with 2 columns
+
+            // Add rows to the table
+            table.addCell("Candidate Name  ");
+            table.addCell(admitcard.getCandidateId().getApplicant().getFirstName() + " " + admitcard.getCandidateId().getApplicant().getLastName());
+
+            table.addCell("Gender  ");
+            table.addCell(admitcard.getCandidateId().getApplicant().getGender());
+
+            table.addCell("Email  ");
+            table.addCell(admitcard.getCandidateId().getApplicant().getEmail());
+
+            table.addCell("Exam Name  ");
+            table.addCell(examName);
+
+            table.addCell("Serial Number  ");
+            table.addCell(new Paragraph(String.valueOf(serialNumber)));
+
+
+            // Set alignment properties for the table
+            table.setFontSize(13);
+            table.setTextAlignment(TextAlignment.LEFT);
+            table.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            table.setVerticalAlignment(VerticalAlignment.MIDDLE);
+
+            // Add the table to the document
+            document.add(table);
+
+
+            document.add(new Paragraph("\n\nDetails QR Code: \n").setFontSize(14).setTextAlignment(TextAlignment.CENTER));
+
+            // Generate QR code containing information about the applicant
+            String qrCodeContent = "Applicant:\n" +
+                    "Serial Number: " + serialNumber +
+                    "Name: " + admitcard.getCandidateId().getApplicant().getFirstName() + " " + admitcard.getCandidateId().getApplicant().getLastName() + "\n" +
+                    "Gender: " + admitcard.getCandidateId().getApplicant().getGender() + "\n" +
+                    "Date of Birth: " + admitcard.getCandidateId().getApplicant().getDob() + "\n" +
+                    "Email: " + admitcard.getCandidateId().getApplicant().getEmail() + "\n" +
+                    "Contact Number: " + admitcard.getCandidateId().getApplicant().getContactNumber() + "\n" +
+                    "Degree Name: " + admitcard.getCandidateId().getApplicant().getDegreeName() + "\n" +
+                    "Educational Institute: " + admitcard.getCandidateId().getApplicant().getEducationalInstitute() + "\n" +
+                    "Passing Year: " + admitcard.getCandidateId().getApplicant().getPassingYear();
+
+            byte[] qrCodeBytes = generateQRCode(qrCodeContent);
+            if (qrCodeBytes != null) {
+                // Embed the QR code image in the PDF document
+                Image qrCodeImage = new Image(ImageDataFactory.create(qrCodeBytes));
+                document.add(qrCodeImage.setHorizontalAlignment(HorizontalAlignment.CENTER));
+            }
+
+
+
+            // Save and close the PDF document
+            pdfDocument.close();
+
+            // Retrieve the byte array of the generated PDF
+            return outputStream.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     private byte[] generateQRCode(String content) {
@@ -283,10 +350,9 @@ public class AdmitcardServiceImplementation implements AdmitcardService {
             return outputStream.toByteArray();
         } catch (WriterException | IOException e) {
             e.printStackTrace();
-            // Handle the exception appropriately
         }
 
-        return null; // Return null if QR code generation fails
+        return null;
     }
 
 }
