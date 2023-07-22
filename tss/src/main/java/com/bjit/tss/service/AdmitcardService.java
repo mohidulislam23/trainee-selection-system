@@ -8,6 +8,6 @@ public interface AdmitcardService {
     ResponseEntity<Object> updateAdmitcard(Long admitcardId, AdmitcardModel admitcardModel);
     ResponseEntity<Object> deleteAdmitcard(Long admitcardId);
     ResponseEntity<Object> getAllAdmitcards();
-    ResponseEntity<Object> getAdmitcardById(Long admitcardId);
-    ResponseEntity<Object> generateAdmitcardPdf(Long admitcardId);
+    ResponseEntity<Object> getAdmitcardById(Long applicantId);
+    ResponseEntity<Object> generateAdmitcardPdf(Long applicantId);
 }

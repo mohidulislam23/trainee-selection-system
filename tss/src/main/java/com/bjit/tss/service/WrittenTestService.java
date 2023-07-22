@@ -20,5 +20,7 @@ public interface WrittenTestService {
     ResponseEntity<Object> updateWrittenTest(Long hiddenCode, Double mark);
 
     ResponseEntity<Object> uploadWrittenTestByHiddenCode(MultipartFile file);
+
+    ResponseEntity<Object> getWrittenTestByApplicantId(Long applicantId);
 }
 

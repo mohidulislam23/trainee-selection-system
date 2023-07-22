@@ -24,6 +24,10 @@ public class WrittenTestController {
     public ResponseEntity<Object> getWrittenTestById(@PathVariable Long writtenTestId) {
         return writtenTestService.getWrittenTestById(writtenTestId);
     }
+    @GetMapping("/applicantId/{applicantId}")
+    public ResponseEntity<Object> getWrittenTestByApplicantId(@PathVariable Long applicantId) {
+        return writtenTestService.getWrittenTestByApplicantId(applicantId);
+    }
 
     @GetMapping
     public ResponseEntity<Object> getAllWrittenTest() {
