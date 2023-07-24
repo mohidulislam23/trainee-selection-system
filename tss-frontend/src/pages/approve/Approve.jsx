@@ -19,7 +19,12 @@ const Approve = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/approval/');
+      const token = localStorage.getItem('token');
+      const response = await axios.get('http://localhost:8080/approval/', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setApplicants(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -28,7 +33,12 @@ const Approve = () => {
 
   const fetchAdmitCards = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/admitcard/');
+      const token = localStorage.getItem('token');
+      const response = await axios.get('http://localhost:8080/admitcard/', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setAdmitCards(response.data);
     } catch (error) {
       console.error('Error fetching admit cards:', error);
@@ -42,7 +52,12 @@ const Approve = () => {
         circular: { circularId: applicant.circular.circularId },
         approved: true,
       };
-      await axios.put(`http://localhost:8080/approval/${applicant.approvalId}`, data);
+      const token = localStorage.getItem('token');
+      await axios.put(`http://localhost:8080/approval/${applicant.approvalId}`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       fetchData();
     } catch (error) {
@@ -52,7 +67,12 @@ const Approve = () => {
 
   const handleGenerateAdmitCard = async () => {
     try {
-      await axios.post('http://localhost:8080/admitcard/');
+      const token = localStorage.getItem('token');
+      await axios.post('http://localhost:8080/admitcard/', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       fetchAdmitCards();
     } catch (error) {
       console.error('Error generating admit card:', error);
@@ -61,7 +81,12 @@ const Approve = () => {
 
   const handleGenerateHiddenCode = async () => {
     try {
-      await axios.post('http://localhost:8080/written/auto-create');
+      const token = localStorage.getItem('token');
+      await axios.post('http://localhost:8080/written/auto-create', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       fetchWrittenData();
     } catch (error) {
       console.error('Error generating hidden code:', error);
@@ -70,7 +95,12 @@ const Approve = () => {
 
   const fetchWrittenData = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/written/');
+      const token = localStorage.getItem('token');
+      const response = await axios.get('http://localhost:8080/written/', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setWrittenData(response.data);
     } catch (error) {
       console.error('Error fetching written data:', error);

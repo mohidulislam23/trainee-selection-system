@@ -4,6 +4,7 @@ import com.bjit.tss.model.AdmitcardModel;
 import com.bjit.tss.service.AdmitcardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,11 +35,14 @@ public class AdmitcardController {
     }
 
     @GetMapping("/{applicantId}")
+    @PreAuthorize("permitAll()")
+
     public ResponseEntity<Object> getAdmitcardById(@PathVariable Long applicantId) {
         return admitcardService.getAdmitcardById(applicantId);
     }
 
     @GetMapping("/{applicantId}/pdf")
+    @PreAuthorize("hasAnyRole('APPLICANT')")
     public ResponseEntity<Object> generateAdmitcardPdf(@PathVariable Long applicantId) {
         return admitcardService.generateAdmitcardPdf(applicantId);
     }

@@ -15,7 +15,12 @@ const Apply = () => {
     // Fetch circular data from the server
     const fetchCircularData = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/circular/');
+            const token = localStorage.getItem('token');
+            const response = await axios.get('http://localhost:8080/circular/', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             setCircularData(response.data);
         } catch (error) {
             console.error('Error fetching circular data:', error);
@@ -28,7 +33,12 @@ const Apply = () => {
         // and returns an array of circular IDs the user has applied for.
         const fetchAppliedCirculars = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/applied-circulars/');
+                const token = localStorage.getItem('token');
+                const response = await axios.get('http://localhost:8080/applied-circulars/', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
                 setAppliedCirculars(response.data);
             } catch (error) {
                 console.error('Error fetching applied circulars:', error);
@@ -79,7 +89,12 @@ const Apply = () => {
         };
 
         try {
-            await axios.post('http://localhost:8080/approval/', data);
+            const token = localStorage.getItem('token');
+            await axios.post('http://localhost:8080/approval/', data, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             console.log('Application submitted successfully:', data);
         } catch (error) {
             console.error('Error submitting application:', error.response?.data?.message || error.message);

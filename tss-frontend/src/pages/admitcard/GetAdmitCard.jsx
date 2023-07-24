@@ -23,8 +23,15 @@ const GetAdmitCard = () => {
 
     const decodedApplicantId = atob(applicantId);
 
+    // Get the token from localStorage
+    const token = localStorage.getItem('token');
+
     axios
-      .get(`http://localhost:8080/admitcard/${decodedApplicantId}`)
+      .get(`http://localhost:8080/admitcard/${decodedApplicantId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+        },
+      })
       .then((response) => {
         setAdmitCardData(response.data);
       })
@@ -42,12 +49,17 @@ const GetAdmitCard = () => {
       return;
     }
 
+    // Get the token from localStorage
+    const token = localStorage.getItem('token');
     const decodedApplicantId = atob(applicantId);
 
     axios
-      .get(`http://localhost:8080/admitcard/${decodedApplicantId}/pdf`, {
-        responseType: 'arraybuffer', // Ensure response is treated as binary data
-      })
+    .get(`http://localhost:8080/admitcard/${decodedApplicantId}/pdf`, {
+      responseType: 'arraybuffer', // Ensure response is treated as binary data
+      headers: {
+        Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+      },
+    })
       .then((response) => {
         // Simulate downloading the PDF
         const pdfData = new Uint8Array(response.data);
@@ -66,6 +78,7 @@ const GetAdmitCard = () => {
       });
   };
 
+  
   return (
     <div className="get-admit-card">
       <h2>Get Admit Card</h2>

@@ -16,7 +16,12 @@ const UploadMark = () => {
 
   useEffect(() => {
     // Fetch exam options from the API endpoint
-    axios.get('http://localhost:8080/exam/')
+    const token = localStorage.getItem('token');
+    axios.get('http://localhost:8080/exam/', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => {
         setExamOptions(response.data);
       })
@@ -27,7 +32,12 @@ const UploadMark = () => {
 
   useEffect(() => {
     // Fetch all marks from the API endpoint
-    axios.get('http://localhost:8080/mark/all')
+    const token = localStorage.getItem('token');
+    axios.get('http://localhost:8080/mark/all', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => {
         setAllMarks(response.data);
       })
@@ -54,7 +64,12 @@ const UploadMark = () => {
     };
 
     // Send a POST request to upload the mark data
-    axios.post('http://localhost:8080/mark/save', markData)
+    const token = localStorage.getItem('token');
+    axios.post('http://localhost:8080/mark/save', markData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => {
         setSuccessMessage('Mark uploaded successfully.');
         setErrorMessage('');
@@ -78,7 +93,12 @@ const UploadMark = () => {
 
   const fetchMarksByApplicant = (applicantId) => {
     if (applicantId.trim() !== '') {
-      axios.get(`http://localhost:8080/mark/applicant/${applicantId}`)
+      const token = localStorage.getItem('token');
+      axios.get(`http://localhost:8080/mark/applicant/${applicantId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
         .then((response) => {
           setMarksByApplicant(response.data);
         })
@@ -90,7 +110,12 @@ const UploadMark = () => {
 
   const fetchMarksByCircular = (circular) => {
     if (circular.trim() !== '') {
-      axios.get(`http://localhost:8080/mark/circular/${circular}`)
+      const token = localStorage.getItem('token');
+      axios.get(`http://localhost:8080/mark/circular/${circular}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
         .then((response) => {
           setMarksByCircular(response.data);
         })
@@ -101,7 +126,12 @@ const UploadMark = () => {
   };
 
   const fetchAllMarks = () => {
-    axios.get('http://localhost:8080/mark/all')
+    const token = localStorage.getItem('token');
+    axios.get('http://localhost:8080/mark/all', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => {
         setAllMarks(response.data);
       })

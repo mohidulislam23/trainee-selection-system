@@ -14,7 +14,12 @@ const ShowAllApplicant = () => {
 
   const fetchApplicants = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/applicant/');
+      const token = localStorage.getItem('token'); // Get the JWT token from localStorage
+      const response = await axios.get('http://localhost:8080/applicant/', {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+        },
+      });
       setApplicantData(response.data);
     } catch (error) {
       console.error('Error fetching applicants', error);

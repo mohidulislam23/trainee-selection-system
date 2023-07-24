@@ -22,7 +22,19 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public ResponseEntity<Object> register(UserRequestModel requestModel) {
-        Role role_ = requestModel.getRole().equals(Role.APPLICANT.name()) ? Role.APPLICANT : Role.ADMIN;
+        Role role_;
+        String requestedRole = requestModel.getRole();
+
+        if (Role.ADMIN.name().equals(requestedRole)) {
+            role_ = Role.ADMIN;
+        } else if (Role.APPLICANT.name().equals(requestedRole)) {
+            role_ = Role.APPLICANT;
+        } else if (Role.EVALUATOR.name().equals(requestedRole)) {
+            role_ = Role.EVALUATOR;
+        } else {
+            role_ = Role.APPLICANT;
+        }
+
         UserEntity userEntity = UserEntity.builder()
                 .email(requestModel.getEmail())
                 .name(requestModel.getName())
@@ -36,4 +48,5 @@ public class UserServiceImplementation implements UserService {
                 .build();
         return new ResponseEntity<>(authRes, HttpStatus.CREATED);
     }
+
 }

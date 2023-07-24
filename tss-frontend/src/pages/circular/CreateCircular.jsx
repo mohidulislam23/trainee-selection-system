@@ -25,7 +25,12 @@ const CreateCircular = () => {
     };
 
     // Send a POST request to create the circular
-    axios.post('http://localhost:8080/circular/', circularData)
+    const token = localStorage.getItem('token');
+    axios.post('http://localhost:8080/circular/', circularData, {
+      headers: {
+          Authorization: `Bearer ${token}`,
+      },
+  })
       .then(() => {
         setSuccessMessage('Circular created successfully.');
         setErrorMessage('');

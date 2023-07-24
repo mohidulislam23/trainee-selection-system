@@ -11,7 +11,12 @@ const ShowAndSendMail = () => {
 
   useEffect(() => {
     // Fetch data from the API endpoint
-    axios.get('http://localhost:8080/mail/')
+    const token = localStorage.getItem('token');
+    axios.get('http://localhost:8080/mail/', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => {
         setMails(response.data);
       })
@@ -39,7 +44,12 @@ const ShowAndSendMail = () => {
     };
 
     // Send data to the API endpoint
-    axios.post(`http://localhost:8080/mail/sendToApplicants/${selectedMailId}`, jsonData)
+    const token = localStorage.getItem('token');
+    axios.post(`http://localhost:8080/mail/sendToApplicants/${selectedMailId}`, jsonData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => {
         // Handle successful response if needed
         console.log('Data sent successfully:', response.data);

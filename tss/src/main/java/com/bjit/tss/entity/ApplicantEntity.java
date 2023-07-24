@@ -31,6 +31,4 @@ public class ApplicantEntity {
     private Double cgpa;
     private Integer passingYear;
     private String presentAddress;
-    //private Blob cv;
-    //private Blob resume;
 }

@@ -26,8 +26,10 @@ const UploadWrittenMark = () => {
       setIsLoading(true); 
       setUploadStatus(''); 
 
+      const token = localStorage.getItem('token');
       await axios.put('http://localhost:8080/written/upload', formData, {
         headers: {
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
         },
       });
@@ -53,7 +55,12 @@ const UploadWrittenMark = () => {
       setIsLoading(true);
       setUploadStatus('');
 
-      await axios.put(`http://localhost:8080/written/update/${hiddenCode}`, { mark });
+      const token = localStorage.getItem('token');
+      await axios.put(`http://localhost:8080/written/update/${hiddenCode}`, { mark }, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
 
       setUploadStatus('Manual mark upload successful!');
     } catch (error) {

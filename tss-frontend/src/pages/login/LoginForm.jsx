@@ -13,16 +13,15 @@ const LoginForm = () => {
     event.preventDefault();
     try {
       const response = await axios.post('http://localhost:8080/user/login', formData);
-      const token = response.data.token;
+      const token = response.data.token; 
       console.log('Login successful!', token);
+      window.localStorage.setItem('token', token); 
       window.alert('Login successful!');
-      // Save the token to localStorage or any state management solution (e.g., Redux) for further authorization
-      // You can redirect the user to the dashboard or other protected pages here
+      window.location.reload();
+      
     } catch (error) {
       console.error('Login failed!', error);
       window.alert('Login failed!');
-
-      // Handle the error, e.g., display an error message to the user
     }
   };
 
