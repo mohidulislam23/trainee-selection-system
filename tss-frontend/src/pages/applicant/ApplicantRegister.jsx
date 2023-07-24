@@ -39,14 +39,17 @@ const ApplicantRegister = () => {
             presentAddress,
         };
 
-        // Send a POST request to register the applicant
-        axios.post('http://localhost:8080/applicant/', applicantData)
+        const token = localStorage.getItem('token');
+
+        axios.post('http://localhost:8080/applicant/', applicantData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
             .then((response) => {
-                // Get the applicant ID from the response and display it
                 setApplicantId(response.data.applicantId);
                 setSuccessMessage('Applicant registered successfully.');
                 setErrorMessage('');
-                // Clear the form after successful submission
                 setFirstName(response.data.firstName);
                 setLastName(response.data.lastName);
                 setGender(response.data.gender);
@@ -65,36 +68,12 @@ const ApplicantRegister = () => {
             });
     };
 
-    // const handleGeneratePDF = () => {
-    //     if (applicantId) {
-    //         // Create a new instance of jsPDF
-    //         const pdf = new jsPDF();
 
-    //         // Add the watermark image to the PDF
-    //         const watermarkImageUrl = './src/assets/bjit.png'; // Replace with the actual path to your watermark image
-    //         const watermarkWidth = 40; // Adjust the width of the watermark image as needed
-    //         const watermarkHeight = (watermarkWidth * 7) / 6; // Maintain the aspect ratio of the watermark image
-    //         const xPosition = (pdf.internal.pageSize.getWidth() - watermarkWidth + 1) / 1; // Center the watermark horizontally
-    //         const yPosition = (pdf.internal.pageSize.getHeight() - watermarkHeight) / 30; // Center the watermark vertically
-    //         pdf.addImage(watermarkImageUrl, 'PNG', xPosition, yPosition, watermarkWidth, watermarkHeight);
-
-    //         // Define the content to be included in the PDF
-    //         const pdfData = `Applicant ID: ${applicantId}\nFull Name: ${firstName} ${lastName}\nEmail: ${email}\nContact Number: ${contactNumber}\nDegree Name: ${degreeName}\nCGPA: ${cgpa}\nPassing Year: ${passingYear}\nPresent Address: ${presentAddress}`;
-    //         // const pdfData = `Applicant ID: ${applicantId}\nFull Name: ${firstName} ${lastName}\nEmail: ${email}\nContact Number: ${contactNumber}\nDegree Name: ${degreeName}\nCGPA: ${cgpa}\nPassing Year: ${passingYear}\nPresent Address: ${presentAddress}`;
-
-    //         // Add the content to the PDF
-    //         pdf.text(10, 10, pdfData);
-
-    //         // Save the PDF with a filename
-    //         pdf.save('applicant_details.pdf');
-    //     }
-    // };
 
     const handleGeneratePDF = () => {
         if (applicantId) {
             const pdf = new jsPDF();
 
-            // Add the watermark image to the PDF
             const watermarkImageUrl = './src/assets/bjit.png';
             const watermarkWidth = 40;
             const watermarkHeight = (watermarkWidth * 21) / 20;
@@ -102,9 +81,8 @@ const ApplicantRegister = () => {
             const yPosition = (pdf.internal.pageSize.getHeight() - watermarkHeight) / 30;
             pdf.addImage(watermarkImageUrl, 'PNG', xPosition, yPosition, watermarkWidth, watermarkHeight);
 
-            // Define the content to be included in the PDF as a table
             const tableData = [
-                ['Applicant ID', btoa(applicantId) ],
+                ['Applicant ID', btoa(applicantId)],
                 ['Full Name', `${firstName} ${lastName}`],
                 ['Email', email],
                 ['Contact Number', contactNumber],
@@ -114,20 +92,13 @@ const ApplicantRegister = () => {
                 ['Present Address', presentAddress],
             ];
 
-            // Add the table to the PDF
             pdf.autoTable({
                 head: [['Attribute', 'Value']],
                 body: tableData,
-                startY: 60, // Adjust the vertical position of the table in the PDF
+                startY: 60,
             });
 
-            // // Add the title at the end of the PDF
-            // const title = 'Applicant Register Details';
-            // const titleX = pdf.internal.pageSize.getWidth() / 2;
-            // const titleY = pdf.internal.pageSize.getHeight() - 20;
-            // pdf.text(titleX, titleY, title, { align: 'center' });
 
-            // Save the PDF with a filename
             pdf.save('applicant_details.pdf');
         }
     };

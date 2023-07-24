@@ -1,133 +1,124 @@
 import './App.css';
-import React from 'react';
-// import { BrowserRouter as Router,Route } from 'react-router-dom'; // Import Router, Switch, and Route
-// import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Footer from './components/footer/Footer';
+import React, { useEffect, useState } from 'react';
+import jwt_decode from 'jwt-decode';
+import { Route, Routes } from 'react-router-dom';
+import Header from './components/header/Header';
+import CommonNav from './components/navbar/CommonNav';
+import AdminNav from './components/navbar/AdminNav';
+import ApplicantNav from './components/navbar/ApplicantNav';
+import EvaluatorNav from './components/navbar/EvaluatorNav';
+import Home from './pages/home/Home';
+import CreateCircular from './pages/circular/CreateCircular';
+import CircularShow from './pages/circular/CircularShow';
+import UploadMark from './pages/marks/UploadMark';
+import CreateExam from './pages/exams/CreateExam';
+import Result from './pages/result/Result';
+import CreateMail from './pages/mail/CreateMail';
+import ShowAndSendMail from './pages/mail/ShowAndSendMail';
+import ShowAllApplicant from './pages/applicant/ShowAllApplicant';
+import Approve from './pages/approve/Approve';
 import RegistrationForm from './pages/registration/RegistrationForm';
 import LoginForm from './pages/login/LoginForm';
-import CircularShow from './pages/circular/CircularShow';
-import ApplyPage from './pages/apply/ApplyPage';
-import { BrowserRouter, Route, Router, Routes } from 'react-router-dom';
-import ShowAllApplicant from './pages/applicant/ShowAllApplicant';
-import ShowAndSendMail from './pages/mail/ShowAndSendMail';
-import CreateMail from './pages/mail/CreateMail';
-import Result from './pages/result/Result';
-import Result2 from './pages/result/Result2';
-import CreateExam from './pages/exams/CreateExam';
-import UploadMark from './pages/marks/UploadMark';
 import ApplicantRegister from './pages/applicant/ApplicantRegister';
-import CreateCircular from './pages/circular/CreateCircular';
 import Apply from './pages/apply/Apply';
-import Apply2 from './pages/apply/Apply';
-import GetAdmitCard from './pages/admitcard/GetAdmitCard';
 import NotificationProp from './pages/notification/NotificationProp';
-import Approve from './pages/approve/Approve';
+import ResourceUpload from './pages/resource/ResourceUpload';
+import GetAdmitCard from './pages/admitcard/GetAdmitCard';
 import UploadWrittenMark from './pages/marks/UploadWrittenMark';
-import Header from './components/header/Header';
-import AdminNav from './components/navbar/AdminNav';
-import Home from './pages/home/Home';
-import ApplicantNav from './components/navbar/ApplicantNav';
+import Footer from './components/footer/Footer';
 
 const App = () => {
+  const [userRole, setUserRole] = useState(null); // Use null as the initial state value
+
+  const decodeToken = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decodedToken = jwt_decode(token);
+      console.log('Decoded Token:', decodedToken); // Log the decoded token to check its structure
+      const role = decodedToken?.roles?.[0]?.authority; // Assuming roles are stored in an array
+      console.log('User Role:', role); // Log the extracted user role
+      setUserRole(role);
+    }
+  };
+
+  useEffect(() => {
+    decodeToken();
+  }, []);
+
+  if (userRole === null) {
+    return (
+      <div>
+        <header>
+          <Header />
+          <CommonNav />
+        </header>
+        <main style={{ backgroundColor: '', padding: 80 }}>
+          <Routes>
+            <Route path="/login-form" element={<LoginForm />} />
+            <Route path="/" element={<LoginForm />} />
+          </Routes>
+        </main>
+        <footer><Footer /></footer>
+      </div>
+    );
+  }
+
   return (
     <div>
-
-
-
       <header>
         <Header />
-        <AdminNav />
-        <ApplicantNav />
-
-
-
-
+        <CommonNav />
+        {userRole === 'ADMIN' && <AdminNav />}
+        {userRole === 'APPLICANT' && <ApplicantNav />}
+        {userRole === 'EVALUATOR' && <EvaluatorNav />}
       </header>
 
-
-
-      <main style={{
-        backgroundColor: '', padding: 80
-        
-      }}>
-
+      <main style={{ backgroundColor: '', padding: 80 }}>
         <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route path="/create-circular" element={<CreateCircular />} />
-          <Route path="/circular-show" element={<CircularShow />} />
-          <Route path="/upload-mark" element={<UploadMark />} />
-          <Route path="/create-exam" element={<CreateExam />} />
-          <Route path="/result" element={<Result />} />
-          <Route path="/create-mail" element={<CreateMail />} />
-          <Route path="/show-send-mail" element={<ShowAndSendMail />} />
-          <Route path="/show-all-applicant" element={<ShowAllApplicant />} />
-          <Route path="/approve" element={<Approve />} />
+          {/* Authenticated Routes for ADMIN */}
+          {userRole === 'ADMIN' && (
+            <>
+              <Route path="/" element={<Home />} />
+              <Route path="/create-circular" element={<CreateCircular />} />
+              <Route path="/circular-show" element={<CircularShow />} />
+              <Route path="/upload-mark" element={<UploadMark />} />
+              <Route path="/create-exam" element={<CreateExam />} />
+              <Route path="/result" element={<Result />} />
+              <Route path="/create-mail" element={<CreateMail />} />
+              <Route path="/show-send-mail" element={<ShowAndSendMail />} />
+              <Route path="/show-all-applicant" element={<ShowAllApplicant />} />
+              <Route path="/approve" element={<Approve />} />
+            </>
+          )}
 
-          <Route path="/" element={<Home />} />
-          <Route path="/registration-form" element={<RegistrationForm />} />
-          <Route path="/login-form" element={<LoginForm />} />
-          <Route path="/applicant-register" element={<ApplicantRegister />} />
-          <Route path="/apply" element={<Apply />} />
-          <Route path="/notification" element={<NotificationProp applicantId={3} />} />
+          {/* Authenticated Routes for APPLICANT */}
+          {userRole === 'APPLICANT' && (
+            <>
+              <Route path="/" element={<Home />} />
+              <Route path="/applicant-register" element={<ApplicantRegister />} />
+              <Route path="/apply" element={<Apply />} />
+              <Route path="/notification" element={<NotificationProp applicantId={3} />} />
+              <Route path="/resource-upload" element={<ResourceUpload applicantId={7} />} />
+              <Route path="/admitcard" element={<GetAdmitCard />} />
+            </>
+          )}
+
+          {/* Authenticated Routes for EVALUATOR */}
+          {userRole === 'EVALUATOR' && (
+            <>
+              <Route path="/" element={<Home />} />
+              <Route path="/written-mark-upload" element={<UploadWrittenMark />} />
+            </>
+          )}
+
+          {/* Fallback Route for unmatched URLs */}
+          <Route path="*" element={<Home />} />
         </Routes>
-
-
-        {/* <p>This is the main content of the app.</p> */}
       </main>
-      <footer><Footer /></footer>
 
-
-      {/* Admin work */}
-      {/* ---------------------------------------- */}
-      {/* <CreateCircular />
-      <CircularShow />
-
-      <UploadMark />
-
-      <CreateExam />
-
-      <Result />
-
-      <CreateMail />
-      <ShowAndSendMail />
-
-      <ShowAllApplicant />
-
-      <Approve /> */}
-
-
-
-      {/* Applicant work */}
-      {/* ---------------------------------------- */}
-
-      {/* <RegistrationForm />
-
-
-      <ApplicantRegister />
-
-      <Apply />
-
-      <NotificationProp applicantId={2}/> */}
-      {/* <NotificationProp applicantId={5} /> */}
-
-
-      {/* <GetAdmitCard /> */}
-
-
-      {/* Evaluator work */}
-      {/* ---------------------------------------- */}
-
-      {/* <UploadWrittenMark /> */}
-
-
-      {/* <Routes >
-        <Route path="/circular" element={<CircularShow></CircularShow>}></Route>
-      </Routes> */}
-
-
-
-
-
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 };

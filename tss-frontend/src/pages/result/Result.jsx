@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Result.scss';
+import ResourceShow from '../resource/ResourceShow';
 
 const Result = () => {
   const [results, setResults] = useState([]);
@@ -11,10 +12,15 @@ const Result = () => {
   const [circularResults, setCircularResults] = useState([]);
   const [sortedCircularResults, setSortedCircularResults] = useState([]);
   const [applicantResults, setApplicantResults] = useState([]);
+  const [showDetailsForApplicantId, setShowDetailsForApplicantId] = useState(null);
 
   useEffect(() => {
     // Fetch data from the API endpoint
-    axios.get('http://localhost:8080/result/all')
+    const token = localStorage.getItem('token');
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    axios.get('http://localhost:8080/result/all', { headers })
       .then((response) => {
         setResults(response.data);
       })
@@ -26,7 +32,11 @@ const Result = () => {
   const handleShowScore = () => {
     if (!isButtonClicked) {
       // Send a blank POST request to generate scores
-      axios.post('http://localhost:8080/result/generate', {})
+      const token = localStorage.getItem('token');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      }; 
+      axios.post('http://localhost:8080/result/generate', {}, { headers })
         .then(() => {
           // Set the isButtonClicked state to true to hide the button
           setIsButtonClicked(true);
@@ -59,7 +69,11 @@ const Result = () => {
 
   const handleSearchByCircular = () => {
     if (circularTitle.trim() !== '') {
-      axios.get(`http://localhost:8080/result/circular/${circularTitle}`)
+      const token = localStorage.getItem('token');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      }; 
+      axios.get(`http://localhost:8080/result/circular/${circularTitle}`, {headers})
         .then((response) => {
           setCircularResults(response.data);
           setSortedCircularResults(response.data); // Initialize sortedCircularResults
@@ -69,18 +83,6 @@ const Result = () => {
         });
     }
   };
-
-//   const handleSearchByApplicantID = () => {
-//     if (applicantID.trim() !== '') {
-//       axios.get(`http://localhost:8080/result/applicant/${applicantID}`)
-//         .then((response) => {
-//           setApplicantResults([response.data]);
-//         })
-//         .catch((error) => {
-//           console.error('Error fetching results by applicant ID:', error);
-//         });
-//     }
-//   };
 
   const handleSortByScoreCircular = () => {
     // Toggle sorting direction between 'asc' and 'desc'
@@ -102,7 +104,10 @@ const Result = () => {
   const getSortIcon = () => {
     return sortDirection === 'asc' ? '▲' : '▼';
   };
-  
+
+  const handleDetailsClick = (applicantId) => {
+    setShowDetailsForApplicantId(applicantId);
+  };
 
   return (
     <div className="result">
@@ -119,6 +124,7 @@ const Result = () => {
             <th onClick={handleSortByScore}>
               Score {getSortIcon()}
             </th>
+            <th>Details</th>
           </tr>
         </thead>
         <tbody>
@@ -127,6 +133,9 @@ const Result = () => {
               <td>{result.applicantId}</td>
               <td>{result.circularTitle}</td>
               <td>{result.score}</td>
+              <td>
+                <button onClick={() => handleDetailsClick(result.applicantId)}>click</button>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -163,36 +172,9 @@ const Result = () => {
         </table>
       </div>
 
-      {/* <div>
-        <h2>Results by Applicant ID</h2>
-        <div>
-          <input
-            type="text"
-            placeholder="Enter Applicant ID"
-            value={applicantID}
-            onChange={(e) => setApplicantID(e.target.value)}
-          />
-          <button onClick={handleSearchByApplicantID}>Search</button>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Applicant ID</th>
-              <th>Circular Title</th>
-              <th>Score</th>
-            </tr>
-          </thead>
-          <tbody>
-            {applicantResults.map((result) => (
-              <tr key={result.resultId}>
-                <td>{result.applicantId}</td>
-                <td>{result.circularTitle}</td>
-                <td>{result.score}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div> */}
+      {showDetailsForApplicantId && (
+        <ResourceShow applicantId={showDetailsForApplicantId} />
+      )}
     </div>
   );
 };

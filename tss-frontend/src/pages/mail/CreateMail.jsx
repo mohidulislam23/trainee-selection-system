@@ -20,7 +20,12 @@ const CreateMail = () => {
     };
 
     // Send data to the API endpoint
-    axios.post('http://localhost:8080/mail/', jsonData)
+    const token = localStorage.getItem('token');
+    axios.post('http://localhost:8080/mail/', jsonData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => {
         // Handle successful response
         console.log('Mail saved successfully:', response.data);
@@ -54,7 +59,7 @@ const CreateMail = () => {
           onChange={(e) => setBody(e.target.value)}
         />
         <button onClick={handleSaveToServer}>Save to Server</button>
-        
+
       </div>
       {showAlert && (
         <div className="alert">

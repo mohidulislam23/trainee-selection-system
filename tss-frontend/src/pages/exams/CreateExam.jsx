@@ -24,7 +24,12 @@ const CreateExam = () => {
     };
 
     // Send a POST request to create the exam
-    axios.post('http://localhost:8080/exam/', examData)
+    const token = localStorage.getItem('token');
+    axios.post('http://localhost:8080/exam/', examData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => {
         setSuccessMessage('Exam created successfully.');
         setErrorMessage('');
@@ -49,7 +54,7 @@ const CreateExam = () => {
             id="examName"
             value={examName}
             onChange={(e) => setExamName(e.target.value)}
-            required // Make the field required
+            required
           />
         </div>
         <div>
@@ -59,7 +64,7 @@ const CreateExam = () => {
             id="examCode"
             value={examCode}
             onChange={(e) => setExamCode(e.target.value)}
-            required // Make the field required
+            required
           />
         </div>
         <div>

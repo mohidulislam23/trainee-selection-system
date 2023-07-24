@@ -15,6 +15,8 @@ const ApplicantNav = () => {
           <Link to="/applicant-register" className="nav-link">Applicant Register</Link>
           <Link to="/apply" className="nav-link">Apply</Link>
           <Link to="/notification" className="nav-link">Notification</Link>
+          <Link to="/resource-upload" className="nav-link">Resource</Link>
+          <Link to="/admitcard" className="nav-link">Admitcard</Link>
         </Nav>
       </Container>
     </Navbar>

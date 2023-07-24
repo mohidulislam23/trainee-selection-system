@@ -34,8 +34,6 @@ public class ApplicantServiceImplementation implements ApplicantService {
         applicantEntity.setCgpa(applicantModel.getCgpa());
         applicantEntity.setPassingYear(applicantModel.getPassingYear());
         applicantEntity.setPresentAddress(applicantModel.getPresentAddress());
-        //applicantEntity.setCv(applicantModel.getCv());
-        //applicantEntity.setResume(applicantModel.getResume());
 
         ApplicantEntity savedApplicant = applicantRepository.save(applicantEntity);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedApplicant);
@@ -57,8 +55,7 @@ public class ApplicantServiceImplementation implements ApplicantService {
             existingApplicant.setCgpa(applicantModel.getCgpa());
             existingApplicant.setPassingYear(applicantModel.getPassingYear());
             existingApplicant.setPresentAddress(applicantModel.getPresentAddress());
-            //existingApplicant.setCv(applicantModel.getCv());
-            //existingApplicant.setResume(applicantModel.getResume());
+
 
             applicantRepository.save(existingApplicant);
             return ResponseEntity.ok(existingApplicant);

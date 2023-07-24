@@ -25,6 +25,7 @@ const RegistrationForm = () => {
         try {
             const response = await axios.post('http://localhost:8080/user/register', formData);
             const token = response.data.token;
+            window.localStorage.setItem('token', token); // Save the token to localStorage
             setMessage('Registration successful!'); // Set success message
             window.alert('Registration successful!');
             // Do something after successful registration, e.g., show a success message or redirect to another page
