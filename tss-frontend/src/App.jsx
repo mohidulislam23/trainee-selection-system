@@ -28,15 +28,15 @@ import UploadWrittenMark from './pages/marks/UploadWrittenMark';
 import Footer from './components/footer/Footer';
 
 const App = () => {
-  const [userRole, setUserRole] = useState(null); // Use null as the initial state value
+  const [userRole, setUserRole] = useState(null); 
 
   const decodeToken = () => {
     const token = localStorage.getItem('token');
     if (token) {
       const decodedToken = jwt_decode(token);
-      console.log('Decoded Token:', decodedToken); // Log the decoded token to check its structure
-      const role = decodedToken?.roles?.[0]?.authority; // Assuming roles are stored in an array
-      console.log('User Role:', role); // Log the extracted user role
+      //console.log('Decoded Token:', decodedToken); 
+      const role = decodedToken?.roles?.[0]?.authority; 
+      console.log('User Role:', role); 
       setUserRole(role);
     }
   };
@@ -73,7 +73,9 @@ const App = () => {
         {userRole === 'EVALUATOR' && <EvaluatorNav />}
       </header>
 
-      <main style={{ backgroundColor: '', padding: 80 }}>
+      <main style={{ backgroundColor: '', padding: 80, minHeight: '400px', minWidth: '300px' }}>
+
+        <div>
         <Routes>
           {/* Authenticated Routes for ADMIN */}
           {userRole === 'ADMIN' && (
@@ -97,7 +99,7 @@ const App = () => {
               <Route path="/" element={<Home />} />
               <Route path="/applicant-register" element={<ApplicantRegister />} />
               <Route path="/apply" element={<Apply />} />
-              <Route path="/notification" element={<NotificationProp applicantId={3} />} />
+              <Route path="/notification" element={<NotificationProp applicantId={7} />} />
               <Route path="/resource-upload" element={<ResourceUpload applicantId={7} />} />
               <Route path="/admitcard" element={<GetAdmitCard />} />
             </>
@@ -106,14 +108,15 @@ const App = () => {
           {/* Authenticated Routes for EVALUATOR */}
           {userRole === 'EVALUATOR' && (
             <>
-              <Route path="/" element={<Home />} />
-              <Route path="/written-mark-upload" element={<UploadWrittenMark />} />
+              <Route path="/written-mark-upoad" element={<UploadWrittenMark />} />
             </>
           )}
 
           {/* Fallback Route for unmatched URLs */}
           <Route path="*" element={<Home />} />
         </Routes>
+        </div>
+        
       </main>
 
       <footer>

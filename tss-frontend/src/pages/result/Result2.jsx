@@ -3,7 +3,7 @@ import axios from 'axios';
 import './Result.scss';
 import ResourceShow from '../resource/ResourceShow';
 
-const Result = () => {
+const Result2 = () => {
   const [results, setResults] = useState([]);
   const [sortDirection, setSortDirection] = useState('asc');
   const [isButtonClicked, setIsButtonClicked] = useState(false);
@@ -160,4 +160,4 @@ const Result = () => {
   );
 };
 
-export default Result;
+export default Result2;

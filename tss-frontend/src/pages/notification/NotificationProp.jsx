@@ -12,7 +12,12 @@ const NotificationProp = ({ applicantId }) => {
     // Fetch applicant data
     const fetchApplicantData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/applicant/${applicantId}`);
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`http://localhost:8080/applicant/${applicantId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setApplicantData(response.data);
       } catch (error) {
         console.error('Error fetching applicant data:', error);
@@ -22,7 +27,12 @@ const NotificationProp = ({ applicantId }) => {
     // Fetch admit card data
     const fetchAdmitCardData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/admitcard/${applicantId}`);
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`http://localhost:8080/admitcard/${applicantId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setSelectedForWrittenTest(!!response.data);
       } catch (error) {
         console.error('Error fetching admit card data:', error);
@@ -32,7 +42,12 @@ const NotificationProp = ({ applicantId }) => {
     // Fetch written test data
     const fetchWrittenTestData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/written/applicantId/${applicantId}`);
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`http://localhost:8080/written/applicantId/${applicantId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (response.data && response.data.mark > 17) {
           setPassedWrittenTest(true);
         } else {
@@ -46,7 +61,12 @@ const NotificationProp = ({ applicantId }) => {
     // Fetch result data
     const fetchResultData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/result/applicant/${applicantId}`);
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`http://localhost:8080/result/applicant/${applicantId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setResultGenerated(!!response.data && response.data.length > 0);
       } catch (error) {
         console.error('Error fetching result data:', error);

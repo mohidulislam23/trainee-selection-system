@@ -15,28 +15,31 @@ public class AdmitcardController {
     private final AdmitcardService admitcardService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
     public ResponseEntity<Object> createAdmitcard(@RequestBody AdmitcardModel admitcardModel) {
         return admitcardService.createAdmitcard(admitcardModel);
     }
 
     @PutMapping("/{admitcardId}")
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
     public ResponseEntity<Object> updateAdmitcard(@PathVariable Long admitcardId, @RequestBody AdmitcardModel admitcardModel) {
         return admitcardService.updateAdmitcard(admitcardId, admitcardModel);
     }
 
     @DeleteMapping("/{admitcardId}")
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
     public ResponseEntity<Object> deleteAdmitcard(@PathVariable Long admitcardId) {
         return admitcardService.deleteAdmitcard(admitcardId);
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
     public ResponseEntity<Object> getAllAdmitcards() {
         return admitcardService.getAllAdmitcards();
     }
 
     @GetMapping("/{applicantId}")
-    @PreAuthorize("permitAll()")
-
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
     public ResponseEntity<Object> getAdmitcardById(@PathVariable Long applicantId) {
         return admitcardService.getAdmitcardById(applicantId);
     }
