@@ -13,5 +13,4 @@ public class CircularModel {
     private Long circularId;
     private String title;
     private String description;
-
 }

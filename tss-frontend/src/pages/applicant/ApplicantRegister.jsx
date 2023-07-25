@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import jsPDF from 'jspdf'; // Import the jsPDF library
-import 'jspdf-autotable'; // Import the jspdf-autotable library
-import './ApplicantRegister.scss'; // Import the SCSS file
+import jsPDF from 'jspdf'; //jsPDF library
+import 'jspdf-autotable'; // jspdf-autotable library
+import './ApplicantRegister.scss';
 
 const ApplicantRegister = () => {
     const [firstName, setFirstName] = useState('');
@@ -24,7 +24,6 @@ const ApplicantRegister = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Create the applicant object with the entered data
         const applicantData = {
             firstName,
             lastName,
@@ -46,7 +45,7 @@ const ApplicantRegister = () => {
                 Authorization: `Bearer ${token}`,
             },
         })
-            .then((response) => {
+            .then((response) => {                
                 setApplicantId(response.data.applicantId);
                 setSuccessMessage('Applicant registered successfully.');
                 setErrorMessage('');
@@ -99,7 +98,7 @@ const ApplicantRegister = () => {
             });
 
 
-            pdf.save('applicant_details.pdf');
+            pdf.save('Applicant_card.pdf');
         }
     };
 
@@ -242,7 +241,7 @@ const ApplicantRegister = () => {
 
             {applicantId && (
                 <div>
-                    <p>Applicant ID: {applicantId}</p>
+                    <p>Applicant ID: {btoa(applicantId)}</p>
                     <button onClick={handleGeneratePDF}>Save as PDF</button>
                 </div>
             )}

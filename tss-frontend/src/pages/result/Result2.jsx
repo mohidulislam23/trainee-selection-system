@@ -3,6 +3,9 @@ import axios from 'axios';
 import './Result.scss';
 import ResourceShow from '../resource/ResourceShow';
 
+
+///////// its was for test purpose, I havenot use it 
+
 const Result2 = () => {
   const [results, setResults] = useState([]);
   const [sortDirection, setSortDirection] = useState('asc');
@@ -14,7 +17,6 @@ const Result2 = () => {
   const [applicantResults, setApplicantResults] = useState([]);
 
   useEffect(() => {
-    // Fetch data from the API endpoint
     axios.get('http://localhost:8080/result/all')
       .then((response) => {
         setResults(response.data);
@@ -26,10 +28,8 @@ const Result2 = () => {
 
   const handleShowScore = () => {
     if (!isButtonClicked) {
-      // Send a blank POST request to generate scores
       axios.post('http://localhost:8080/result/generate', {})
         .then(() => {
-          // Set the isButtonClicked state to true to hide the button
           setIsButtonClicked(true);
           window.alert(
             "Refresh the page please to show the results."
@@ -42,11 +42,9 @@ const Result2 = () => {
   };
 
   const handleSortByScore = () => {
-    // Toggle sorting direction between 'asc' and 'desc'
     const newSortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
     setSortDirection(newSortDirection);
 
-    // Sort the results array by the score in the selected direction
     const sortedResults = [...results].sort((a, b) => {
       if (newSortDirection === 'asc') {
         return a.score - b.score;
@@ -63,7 +61,7 @@ const Result2 = () => {
       axios.get(`http://localhost:8080/result/circular/${circularTitle}`)
         .then((response) => {
           setCircularResults(response.data);
-          setSortedCircularResults(response.data); // Initialize sortedCircularResults
+          setSortedCircularResults(response.data); 
         })
         .catch((error) => {
           console.error('Error fetching results by circular:', error);
@@ -74,11 +72,9 @@ const Result2 = () => {
 
 
   const handleSortByScoreCircular = () => {
-    // Toggle sorting direction between 'asc' and 'desc'
     const newSortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
     setSortDirection(newSortDirection);
 
-    // Sort the circularResults array by the score in the selected direction
     const sortedResults = [...circularResults].sort((a, b) => {
       if (newSortDirection === 'asc') {
         return a.score - b.score;

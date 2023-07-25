@@ -6,6 +6,23 @@
     margin-top: 60px;
     margin-bottom: 80px;
 
+    // .selected-message {
+    //     display: block;
+    //     background-color: #463;
+    //     color: #000000;
+    //     padding: 10px 20px;
+    //     border-radius: 4px;
+    //     position: fixed;
+    //     bottom: 20px;
+    //     left: 50%;
+    //     transform: translateX(-50%);
+    //     opacity: 0; 
+    //     transition: opacity 0.5s ease-in-out; 
+    //     &.show {
+    //       opacity: 1; 
+    //     }
+    //   }
+
     h2 {
         font-size: 24px;
         margin-bottom: 10px;
@@ -28,7 +45,7 @@
             margin-right: 10px;
 
             &:hover {
-                background-color: #0056b3;
+                background-color: #bb2500;
             }
         }
 
@@ -130,3 +147,6 @@
         }
     }
 }
+
+
+  
