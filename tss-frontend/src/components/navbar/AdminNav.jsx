@@ -17,10 +17,9 @@ const AdminNav = () => {
     return (
       <Navbar bg="dark" data-bs-theme="dark">
         <Container>
-        <Navbar.Brand href="/">Admin Navbar</Navbar.Brand>
+        <Navbar.Brand href="/">Admin</Navbar.Brand>
           <Nav className="me-auto">
-            <Link to="/" className="nav-link">Home</Link>
-            <Link to="/login-form" className="nav-link">Login Form</Link>
+            {/* <Link to="/" className="nav-link">Home</Link> */}
             <Link to="/create-circular" className="nav-link">Create Circular</Link>
             <Link to="/circular-show" className="nav-link">Circular Show</Link>
             <Link to="/upload-mark" className="nav-link">Upload Mark</Link>

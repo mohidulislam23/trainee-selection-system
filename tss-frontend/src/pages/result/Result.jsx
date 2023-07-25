@@ -141,6 +141,10 @@ const Result = () => {
         </tbody>
       </table>
 
+      {showDetailsForApplicantId && (
+        <ResourceShow applicantId={showDetailsForApplicantId} />
+      )}
+
       <div>
         <h2>Results by Circular Title</h2>
         <div>
@@ -171,10 +175,7 @@ const Result = () => {
           </tbody>
         </table>
       </div>
-
-      {showDetailsForApplicantId && (
-        <ResourceShow applicantId={showDetailsForApplicantId} />
-      )}
+  
     </div>
   );
 };

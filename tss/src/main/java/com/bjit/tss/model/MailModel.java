@@ -13,7 +13,6 @@ import java.util.Date;
 @Builder
 public class MailModel {
     private Long mailId;
-//    private String sender;
     private String subject;
     private String body;
     private Date timestamp;

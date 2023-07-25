@@ -38,10 +38,7 @@ const CircularShow = () => {
       {circularData.map((circular) => (
         <div className="circular-card" key={circular.circularId}>
           <h3>{circular.title}</h3>
-          <p>{circular.description}</p>
-          <Link to={`/apply/${circular.circularId}`}>
-            <button>Apply</button>
-          </Link>
+          <p>{circular.description}</p>        
         </div>
       ))}
     </div>

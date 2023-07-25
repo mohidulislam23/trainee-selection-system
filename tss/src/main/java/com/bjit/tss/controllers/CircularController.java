@@ -33,13 +33,14 @@ public class CircularController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
     public ResponseEntity<Object> getAllCirculars() {
         return circularService.getAllCirculars();
     }
 
     @GetMapping("/{circularId}")
     @PreAuthorize("permitAll()")
-//    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN')")
+//    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
     public ResponseEntity<Object> getDetailById(@PathVariable Long circularId) {
         return circularService.getDetailById(circularId);
     }
