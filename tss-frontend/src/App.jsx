@@ -26,6 +26,7 @@ import ResourceUpload from './pages/resource/ResourceUpload';
 import GetAdmitCard from './pages/admitcard/GetAdmitCard';
 import UploadWrittenMark from './pages/marks/UploadWrittenMark';
 import Footer from './components/footer/Footer';
+import ShowWrittenMarks from './pages/marks/ShowWrittenMarks';
 
 const App = () => {
   const [userRole, setUserRole] = useState(null); 
@@ -55,13 +56,16 @@ const App = () => {
         <main style={{ backgroundColor: '', padding: 80 }}>
           <Routes>
             <Route path="/login-form" element={<LoginForm />} />
-            <Route path="/" element={<LoginForm />} />
+            <Route path="/registration-form" element={<RegistrationForm />} />
+            <Route path="/" element={<RegistrationForm />} />
           </Routes>
         </main>
         <footer><Footer /></footer>
       </div>
     );
   }
+
+  
 
   return (
     <div>
@@ -90,6 +94,7 @@ const App = () => {
               <Route path="/show-send-mail" element={<ShowAndSendMail />} />
               <Route path="/show-all-applicant" element={<ShowAllApplicant />} />
               <Route path="/approve" element={<Approve />} />
+              <Route path="/written-mark" element={<ShowWrittenMarks />} />
             </>
           )}
 

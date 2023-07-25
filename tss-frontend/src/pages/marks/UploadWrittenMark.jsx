@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './UploadWrittenMark.scss';
 
@@ -8,10 +8,25 @@ const UploadWrittenMark = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hiddenCode, setHiddenCode] = useState('');
   const [mark, setMark] = useState('');
+  const [showSelectedMessage, setShowSelectedMessage] = useState(false);
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
+    setShowSelectedMessage(true);
   };
+
+  useEffect(() => {
+    let timer;
+    if (showSelectedMessage) {
+      timer = setTimeout(() => {
+        setShowSelectedMessage(false);
+      }, 3000);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [showSelectedMessage]);
 
   const handleUpload = async () => {
     if (!selectedFile) {
@@ -39,7 +54,7 @@ const UploadWrittenMark = () => {
       console.error('Error uploading file:', error);
       setUploadStatus('Error uploading file. Please try again.');
     } finally {
-      setIsLoading(false); // Hide loading spinner
+      setIsLoading(false); 
     }
   };
 
@@ -58,9 +73,9 @@ const UploadWrittenMark = () => {
       const token = localStorage.getItem('token');
       await axios.put(`http://localhost:8080/written/update/${hiddenCode}`, { mark }, {
         headers: {
-            Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
-    });
+      });
 
       setUploadStatus('Manual mark upload successful!');
     } catch (error) {
@@ -70,7 +85,6 @@ const UploadWrittenMark = () => {
       setIsLoading(false);
     }
   };
-
 
   return (
     <div className={`upload-written-mark ${isLoading ? 'loading' : ''}`}>
@@ -83,11 +97,16 @@ const UploadWrittenMark = () => {
       </div>
       {uploadStatus && <p className={`upload-status ${uploadStatus ? 'show' : ''}`}>{uploadStatus}</p>}
 
+      {showSelectedMessage && (
+        <strong><p className="selected-message">File selected!</p></strong>
+        
+      )}
+
       <div className="manual-upload-form">
-        <h3>Manual Mark Upload</h3>
+        <h3>Or</h3>
         <form onSubmit={handleManualUpload}>
           <div className="form-group">
-            <label htmlFor="hiddenCodeInput">Hidden Code:</label>
+            <label htmlFor="hiddenCodeInput">Applicant Code:</label>
             <input
               type="number"
               id="hiddenCodeInput"
@@ -104,7 +123,7 @@ const UploadWrittenMark = () => {
               onChange={(e) => setMark(e.target.value)}
             />
           </div>
-          <button type="submit">Upload Manual Mark</button>
+          <button type="submit">Upload</button>
         </form>
       </div>
     </div>

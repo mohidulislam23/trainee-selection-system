@@ -8,7 +8,7 @@ const EvaluatorNav = () => {
       <Container>
         <Navbar.Brand href="/">Evaluator</Navbar.Brand>
         <Nav className="me-auto">
-          <Link to="/written-mark-upoad" className="nav-link">Written Mark Upload</Link>
+          <Link to="/written-mark-upoad" className="nav-link">Mark Upload</Link>
         </Nav>
       </Container>
     </Navbar>

@@ -18,7 +18,6 @@ public class NoticeServiceImplementation implements NoticeService {
 
     private final NoticeRepository noticeRepository;
 
-
     @Override
     public ResponseEntity<Object> createNotice(NoticeModel noticeModel) {
         NoticeEntity noticeEntity = NoticeEntity.builder()

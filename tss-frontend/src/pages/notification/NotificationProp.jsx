@@ -9,7 +9,6 @@ const NotificationProp = ({ applicantId }) => {
   const [resultGenerated, setResultGenerated] = useState(false);
 
   useEffect(() => {
-    // Fetch applicant data
     const fetchApplicantData = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -24,7 +23,6 @@ const NotificationProp = ({ applicantId }) => {
       }
     };
 
-    // Fetch admit card data
     const fetchAdmitCardData = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -39,7 +37,6 @@ const NotificationProp = ({ applicantId }) => {
       }
     };
 
-    // Fetch written test data
     const fetchWrittenTestData = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -58,7 +55,6 @@ const NotificationProp = ({ applicantId }) => {
       }
     };
 
-    // Fetch result data
     const fetchResultData = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -85,7 +81,7 @@ const NotificationProp = ({ applicantId }) => {
         <>
           <div className="notification-card">
             <h3>Registration Confirmed! 🌟</h3>
-            <p>Your details:</p>
+            <p>Applicant details:</p>
             <p>👤 Name: {applicantData.firstName} {applicantData.lastName}</p>
             <p>📧 Email: {applicantData.email}</p>
             <p>🎓 Educational Institute: {applicantData.educationalInstitute}</p>
@@ -118,7 +114,7 @@ const NotificationProp = ({ applicantId }) => {
       )}
       {!applicantData && (
         <div className="notification-card">
-          <h3>No data found for this applicant.</h3>
+          <h3>No notification found for you. Perhape you have not applied for any circular.</h3>
         </div>
       )}
     </div>

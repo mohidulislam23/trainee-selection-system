@@ -20,15 +20,16 @@ const AdminNav = () => {
         <Navbar.Brand href="/">Admin</Navbar.Brand>
           <Nav className="me-auto">
             {/* <Link to="/" className="nav-link">Home</Link> */}
-            <Link to="/create-circular" className="nav-link">Create Circular</Link>
-            <Link to="/circular-show" className="nav-link">Circular Show</Link>
-            <Link to="/upload-mark" className="nav-link">Upload Mark</Link>
-            <Link to="/create-exam" className="nav-link">Create Exam</Link>
-            <Link to="/result" className="nav-link">Result</Link>
-            <Link to="/create-mail" className="nav-link">Create Mail</Link>
-            <Link to="/show-send-mail" className="nav-link">Show and Send Mail</Link>
-            <Link to="/show-all-applicant" className="nav-link">Show All Applicant</Link>
+            <Link to="/create-circular" className="nav-link">Launch training</Link>
+            <Link to="/circular-show" className="nav-link">Circulars</Link>
+            <Link to="/show-all-applicant" className="nav-link">All applicant</Link>
             <Link to="/approve" className="nav-link">Approve</Link>
+            <Link to="/create-mail" className="nav-link">Store default mail</Link>
+            <Link to="/show-send-mail" className="nav-link">Send Mail</Link>
+            <Link to="/written-mark" className="nav-link">Written marks</Link>
+            <Link to="/create-exam" className="nav-link">Exam</Link>
+            <Link to="/upload-mark" className="nav-link">Mark Upload</Link>
+            <Link to="/result" className="nav-link">Result</Link>
           </Nav>
         </Container>
       </Navbar>

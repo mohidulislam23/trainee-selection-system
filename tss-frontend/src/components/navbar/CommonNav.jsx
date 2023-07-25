@@ -17,7 +17,7 @@ const CommonNav = () => {
         <Navbar.Brand href="/">Welcome!</Navbar.Brand>
         <Nav className="me-auto">
           <Link to="/" className="nav-link">Home</Link>
-          <Link to="/registration-form" className="nav-link">Registration</Link>
+          <Link to="/registration-form" className="nav-link">Sign up</Link>
           <Link to="/login-form" className="nav-link">Login</Link>
         </Nav>
         <button className="btn btn-primary" onClick={handleLogout}>Logout</button>
