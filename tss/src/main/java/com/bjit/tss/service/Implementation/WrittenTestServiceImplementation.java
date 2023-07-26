@@ -12,13 +12,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
@@ -160,25 +158,19 @@ public class WrittenTestServiceImplementation implements WrittenTestService {
     @Override
     public ResponseEntity<Object> uploadWrittenTestByHiddenCode(MultipartFile file) {
         try {
-            // Load the Excel file
             Workbook workbook = new XSSFWorkbook(file.getInputStream());
 
-            // Get the first sheet
             Sheet sheet = workbook.getSheetAt(0);
 
-            // Iterate over rows and update the written tests
             List<WrittenTestModel> updatedWrittenTests = new ArrayList<>();
 
             for (Row row : sheet) {
-                // Read hiddenCode and mark from Excel
                 Long hiddenCode = readHiddenCodeFromExcel(row);
                 Double mark = readMarkFromExcel(row);
 
                 if (hiddenCode != null && mark != null) {
-                    // Call the service method to update the written test
                     updateWrittenTest(hiddenCode, mark);
 
-                    // Retrieve the updated written test and add it to the list
                     WrittenTestEntity updatedWrittenTest = writtenTestRepository.findByHiddenCode(hiddenCode);
                     if (updatedWrittenTest != null) {
                         WrittenTestModel updatedWrittenTestModel = convertToModel(updatedWrittenTest);

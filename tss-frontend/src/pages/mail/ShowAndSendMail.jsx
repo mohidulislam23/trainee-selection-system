@@ -10,7 +10,6 @@ const ShowAndSendMail = () => {
   const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
-    // Fetch data from the API endpoint
     const token = localStorage.getItem('token');
     axios.get('http://localhost:8080/mail/', {
       headers: {
@@ -31,19 +30,16 @@ const ShowAndSendMail = () => {
   };
 
   const handleSendData = () => {
-    // Validate if Username and Password are not blank
     if (username.trim() === '' || password.trim() === '') {
       console.error('Username and Password cannot be blank.');
       return;
     }
 
-    // Prepare the JSON data to send
     const jsonData = {
       username,
       password,
     };
 
-    // Send data to the API endpoint
     const token = localStorage.getItem('token');
     axios.post(`http://localhost:8080/mail/sendToApplicants/${selectedMailId}`, jsonData, {
       headers: {
@@ -51,15 +47,12 @@ const ShowAndSendMail = () => {
       },
     })
       .then((response) => {
-        // Handle successful response if needed
         console.log('Data sent successfully:', response.data);
       })
       .catch((error) => {
-        // Handle error if needed
         console.error('Error sending data:', error);
       });
 
-    // Reset form and selected mail
     setShowForm(false);
     setSelectedMailId(null);
     setUsername('');

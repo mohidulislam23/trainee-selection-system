@@ -9,8 +9,6 @@ import java.util.Optional;
 @Repository
 public interface WrittenTestRepository extends JpaRepository<WrittenTestEntity, Long> {
     WrittenTestEntity findByHiddenCode(Long hiddenCode);
-
-    //    Optional<Object> findByApplicantId(Long applicantId);
     Optional<WrittenTestEntity> findByApplicantId(Long applicantId);
 
 }

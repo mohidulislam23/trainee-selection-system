@@ -13,13 +13,11 @@ const CreateMail = () => {
       return;
     }
 
-    // Prepare the JSON data to send
     const jsonData = {
       subject,
       body,
     };
 
-    // Send data to the API endpoint
     const token = localStorage.getItem('token');
     axios.post('http://localhost:8080/mail/', jsonData, {
       headers: {
@@ -27,14 +25,12 @@ const CreateMail = () => {
       },
     })
       .then((response) => {
-        // Handle successful response
         console.log('Mail saved successfully:', response.data);
         setShowAlert(true);
         setSubject('');
         setBody('');
       })
       .catch((error) => {
-        // Handle error if needed
         console.error('Error saving mail:', error);
       });
   };

@@ -1,27 +1,9 @@
-// UploadWrittenMark.scss
 .upload-written-mark {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 60px;
     margin-bottom: 80px;
-
-    // .selected-message {
-    //     display: block;
-    //     background-color: #463;
-    //     color: #000000;
-    //     padding: 10px 20px;
-    //     border-radius: 4px;
-    //     position: fixed;
-    //     bottom: 20px;
-    //     left: 50%;
-    //     transform: translateX(-50%);
-    //     opacity: 0; 
-    //     transition: opacity 0.5s ease-in-out; 
-    //     &.show {
-    //       opacity: 1; 
-    //     }
-    //   }
 
     h2 {
         font-size: 24px;
@@ -146,7 +128,4 @@
             }
         }
     }
-}
-
-
-  
+} 

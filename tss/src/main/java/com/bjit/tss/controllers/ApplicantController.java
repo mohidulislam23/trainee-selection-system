@@ -15,31 +15,31 @@ public class ApplicantController {
     private final ApplicantService applicantService;
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN')")
     public ResponseEntity<Object> createApplicant(@RequestBody ApplicantModel applicantModel) {
         return applicantService.createApplicant(applicantModel);
     }
 
     @PutMapping("/{applicantId}")
-    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN')")
     public ResponseEntity<Object> updateApplicant(@PathVariable Long applicantId, @RequestBody ApplicantModel applicantModel) {
         return applicantService.updateApplicant(applicantId, applicantModel);
     }
 
     @DeleteMapping("/{applicantId}")
-    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN')")
     public ResponseEntity<Object> deleteApplicant(@PathVariable Long applicantId) {
         return applicantService.deleteApplicant(applicantId);
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN')")
     public ResponseEntity<Object> getAllApplicants() {
         return applicantService.getAllApplicants();
     }
 
     @GetMapping("/{applicantId}")
-    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN')")
     public ResponseEntity<Object> getApplicantById(@PathVariable Long applicantId) {
         return applicantService.getApplicantById(applicantId);
     }

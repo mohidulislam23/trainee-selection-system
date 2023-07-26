@@ -99,7 +99,6 @@ const NotificationP = () => {
     fetchResultData();
   }, [applicantIdFromUser]);
 
-  // Function to handle form submission and set the applicantIdFromUser state
   const handleFormSubmit = (event) => {
     event.preventDefault();
     const applicantIdInput = event.target.applicantId.value;

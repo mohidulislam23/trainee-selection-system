@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './CreateExam.scss'; // Import the SCSS file
+import './CreateExam.scss';
 
 const CreateExam = () => {
   const [examName, setExamName] = useState('');
@@ -11,19 +11,16 @@ const CreateExam = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Check if the examName and examCode fields are not empty
     if (!examName.trim() || !examCode.trim()) {
       setErrorMessage('Exam Name and Exam Code cannot be blank.');
       return;
     }
 
-    // Create the exam object with the entered data
     const examData = {
       examName: examName,
       examCode: examCode,
     };
 
-    // Send a POST request to create the exam
     const token = localStorage.getItem('token');
     axios.post('http://localhost:8080/exam/', examData, {
       headers: {
@@ -33,7 +30,6 @@ const CreateExam = () => {
       .then((response) => {
         setSuccessMessage('Exam created successfully.');
         setErrorMessage('');
-        // Clear the form after successful submission
         setExamName('');
         setExamCode('');
       })

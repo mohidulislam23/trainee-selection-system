@@ -1,6 +1,5 @@
 package com.bjit.tss.service;
 
-import com.bjit.tss.model.ApplicantModel;
 import com.bjit.tss.model.ApprovalModel;
 import org.springframework.http.ResponseEntity;
 

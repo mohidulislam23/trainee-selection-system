@@ -22,7 +22,4 @@ public interface MarkRepository extends JpaRepository<MarkEntity, Long> {
 
     Optional<MarkEntity> findByExamAndApplicantId(ExamEntity examEntity, Long applicantId);
 
-//    @Query("SELECT m FROM MarkEntity m WHERE m.exam = :examEntity AND m.applicantId = :applicantId")
-//    Optional<MarkEntity> findByExamAndApplicantIdCustom(@Param("examEntity") ExamEntity examEntity, @Param("applicantId") Long applicantId);
-
 }

@@ -1,4 +1,4 @@
-// ShowAllApplicant.jsx
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './ShowAllApplicant.scss';
@@ -14,10 +14,10 @@ const ShowAllApplicant = () => {
 
   const fetchApplicants = async () => {
     try {
-      const token = localStorage.getItem('token'); // Get the JWT token from localStorage
+      const token = localStorage.getItem('token'); 
       const response = await axios.get('http://localhost:8080/applicant/', {
         headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+          Authorization: `Bearer ${token}`, 
         },
       });
       setApplicantData(response.data);
@@ -64,7 +64,7 @@ const ShowAllApplicant = () => {
             <th onClick={() => handleSort('educationalInstitute')}>Educational Institute {getSortIcon()}</th>
             <th onClick={() => handleSort('dob')}>Date of Birth {getSortIcon()}</th>
             <th >Present Address</th>
-            {/* <th>Approve</th> */}
+            
           </tr>
         </thead>
         <tbody>
@@ -81,7 +81,7 @@ const ShowAllApplicant = () => {
               <td>{applicant.educationalInstitute}</td>
               <td>{applicant.dob.substring(0,10)}</td>
               <td>{applicant.presentAddress}</td>
-              {/* <td><button className="button-click-effect">Approve</button></td> */}
+              
             </tr>
           ))}
         </tbody>

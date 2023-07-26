@@ -27,7 +27,7 @@ public class ExamController {
     }
 
     @DeleteMapping("/code/{examCode}")
-    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    @PreAuthorize("hasAnyRole( 'ADMIN')")
     public ResponseEntity<Object> deleteExamByExamCode(@PathVariable Long examCode) {
         return examService.deleteExamByExamCode(examCode);
     }

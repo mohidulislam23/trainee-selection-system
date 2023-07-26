@@ -31,16 +31,13 @@ const ResourceUpload = ({ applicantId }) => {
     fetch(`http://localhost:8080/resource/applicant/${applicantId}`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        // Handle the response data if needed
         console.log(data);
-        // Show success message and clear input fields
         setUploadStatus('success');
         setPhoto(null);
         setCv(null);
       })
       .catch((error) => {
         console.error('Error uploading resources:', error);
-        // Show error message if needed
         setUploadStatus('error');
       });
   };

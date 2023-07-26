@@ -25,14 +25,13 @@ const RegistrationForm = () => {
         try {
             const response = await axios.post('http://localhost:8080/user/register', formData);
             const token = response.data.token;
-            window.localStorage.setItem('token', token); // Save the token to localStorage
-            setMessage('Registration successful!'); // Set success message
+            window.localStorage.setItem('token', token);
+            setMessage('Registration successful!');
             window.alert('Registration successful!');
-            // Do something after successful registration, e.g., show a success message or redirect to another page
+            
         } catch (error) {
-            setMessage('Registration failed! Please try again.'); // Set error message
-            window.alert('Registration failed! Please try again.');
-            // Handle the error, e.g., display an error message to the user
+            setMessage('Registration failed! Please try again.');
+            window.alert('Registration failed! Please try again.');            
         }
     };
 

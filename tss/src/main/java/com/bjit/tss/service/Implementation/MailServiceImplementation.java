@@ -119,12 +119,6 @@ public class MailServiceImplementation implements MailService {
 
                 // using JavaMail:
                 try {
-//                    Properties props = new Properties();
-//                    props.put("mail.smtp.host", "smtp.gmail.com");
-//                    props.put("mail.smtp.port", "587");
-//                    props.put("mail.smtp.auth", "true");
-//                    props.put("mail.smtp.starttls.enable", "true");
-
                     Properties props = new Properties();
                     props.put("mail.smtp.host", environment.getProperty("mail.smtp.host"));
                     props.put("mail.smtp.port", environment.getProperty("mail.smtp.port"));
@@ -136,7 +130,6 @@ public class MailServiceImplementation implements MailService {
                             return new PasswordAuthentication(username, password);
                         }
                     });
-
 
 
                     Message message = new MimeMessage(session);
@@ -184,7 +177,6 @@ public class MailServiceImplementation implements MailService {
 
                 String recipient = admitcard.getCandidateId().getApplicant().getEmail();
 
-                // using JavaMail:
                 try {
                     Properties props = new Properties();
                     props.put("mail.smtp.host", environment.getProperty("mail.smtp.host"));
@@ -197,7 +189,6 @@ public class MailServiceImplementation implements MailService {
                             return new PasswordAuthentication(username, password);
                         }
                     });
-
 
 
                     Message message = new MimeMessage(session);

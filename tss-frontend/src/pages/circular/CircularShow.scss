@@ -1,4 +1,4 @@
-// CircularShow.scss
+
 .circular-show {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -9,7 +9,7 @@
       border-radius: 4px;
       padding: 20px;
       background: linear-gradient(135deg, #f0f0f0, #c9c8c8);
-      //background-color: #f8f8f8;
+      
   
       h3 {
         margin-top: 0;
