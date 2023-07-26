@@ -4,6 +4,7 @@ import './UploadMark.scss';
 
 const UploadMark = () => {
   const [examOptions, setExamOptions] = useState([]);
+  const [circularOptions, setCircularOptions] =useState([]);
   const [examId, setExamId] = useState('');
   const [circular, setCircular] = useState('');
   const [applicantId, setApplicantId] = useState('');
@@ -15,7 +16,6 @@ const UploadMark = () => {
   const [marksByCircular, setMarksByCircular] = useState([]);
 
   useEffect(() => {
-    // Fetch exam options from the API endpoint
     const token = localStorage.getItem('token');
     axios.get('http://localhost:8080/exam/', {
       headers: {
@@ -31,7 +31,21 @@ const UploadMark = () => {
   }, []);
 
   useEffect(() => {
-    // Fetch all marks from the API endpoint
+    const token = localStorage.getItem('token');
+    axios.get('http://localhost:8080/circular/', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        setCircularOptions(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching circular options:', error);
+      });
+  }, []);
+
+  useEffect(() => {
     const token = localStorage.getItem('token');
     axios.get('http://localhost:8080/mark/all', {
       headers: {
@@ -55,7 +69,6 @@ const UploadMark = () => {
       return;
     }
 
-    // Create the mark object with the entered data
     const markData = {
       exam: { examId },
       circular,
@@ -63,7 +76,6 @@ const UploadMark = () => {
       mark,
     };
 
-    // Send a POST request to upload the mark data
     const token = localStorage.getItem('token');
     axios.post('http://localhost:8080/mark/save', markData, {
       headers: {
@@ -74,19 +86,17 @@ const UploadMark = () => {
         setSuccessMessage('Mark uploaded successfully.');
         setErrorMessage('');
 
-        // Clear the form after successful submission
         setExamId('');
         setCircular('');
         setApplicantId('');
         setMark('');
 
-        // Refresh marks data
         fetchMarksByApplicant(applicantId);
         fetchMarksByCircular(circular);
         fetchAllMarks();
       })
       .catch((error) => {
-        setErrorMessage('Error uploading mark. Please try again.');
+        setErrorMessage('You have already uploaded the marks previously.');
         setSuccessMessage('');
       });
   };
@@ -162,13 +172,27 @@ const UploadMark = () => {
         </div>
         <div>
           <label htmlFor="circular">Circular:</label>
-          <input
+          {/* <input
             type="text"
             id="circular"
             value={circular}
             onChange={(e) => setCircular(e.target.value)}
             required
-          />
+          /> */}
+          <select
+            type="text"
+            id="circular"
+            value={circular}
+            onChange={(e) => setCircular(e.target.value)}
+            required
+          >
+            <option value="">Select an circular</option>
+            {circularOptions.map((circular) => (
+              <option key={circular.circularId} value={circular.circularId}>
+                {circular.title} 
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label htmlFor="applicantId">Applicant ID:</label>

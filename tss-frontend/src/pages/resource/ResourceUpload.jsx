@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './ResourceUpload.scss'; // Import the SCSS file
+import './ResourceUpload.scss'; 
 
 const ResourceUpload = ({ applicantId }) => {
   const [photo, setPhoto] = useState(null);

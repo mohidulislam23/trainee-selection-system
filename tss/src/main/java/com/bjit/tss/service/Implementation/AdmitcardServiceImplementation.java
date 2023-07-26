@@ -2,9 +2,11 @@ package com.bjit.tss.service.Implementation;
 
 import com.bjit.tss.entity.AdmitcardEntity;
 import com.bjit.tss.entity.ApprovalEntity;
+import com.bjit.tss.entity.ResourceEntity;
 import com.bjit.tss.model.AdmitcardModel;
 import com.bjit.tss.repository.AdmitcardRepository;
 import com.bjit.tss.repository.ApprovalRepository;
+import com.bjit.tss.repository.ResourceRepository;
 import com.bjit.tss.service.AdmitcardService;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -14,6 +16,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.google.zxing.qrcode.encoder.ByteMatrix;
 import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.layout.element.Image;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -44,6 +47,9 @@ import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.VerticalAlignment;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.borders.SolidBorder;
+
 
 //for QR Code
 import com.google.zxing.EncodeHintType;
@@ -250,7 +256,128 @@ public class AdmitcardServiceImplementation implements AdmitcardService {
         return null;
     }
 
-    private byte[] generateAdmitcardPdfBytes(AdmitcardEntity admitcard) {
+    private final ResourceRepository resourceRepository;
+
+    public byte[] generateAdmitcardPdfBytes(AdmitcardEntity admitcard) {
+        // Generating a dummy PDF with the admit card details and QR code
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             PdfDocument pdfDocument = new PdfDocument(new PdfWriter(outputStream));
+             Document document = new Document(pdfDocument, PageSize.A4)) {
+
+            // Retrieve the Exam name from circularId
+            String examName = admitcard.getCandidateId().getCircular().getTitle();
+
+            // Retrieve the candidate name
+            String candidateName = admitcard.getCandidateId().getApplicant().getFirstName() + " " + admitcard.getCandidateId().getApplicant().getLastName();
+
+            // Retrieve the serial number
+            Long serialNumber = admitcard.getSerialNumber();
+            Long aplcntId = admitcard.getCandidateId().getApplicant().getApplicantId();
+
+            // Add content to the PDF document
+            document.add(new Paragraph("Written Test").setFontSize(20).setTextAlignment(TextAlignment.CENTER));
+            document.add(new Paragraph("Admit Card").setFontSize(18).setTextAlignment(TextAlignment.CENTER));
+
+
+            document.add(new Paragraph("No. " + serialNumber).setTextAlignment(TextAlignment.CENTER));
+
+
+            // Get the image data from the ResourceEntity
+            ResourceEntity resourceEntity = resourceRepository.findByApplicant_ApplicantId(admitcard.getCandidateId().getApplicant().getApplicantId())
+                    .orElse(null);
+
+            if (resourceEntity != null && resourceEntity.getPhotoData() != null) {
+                // Embed the image in the PDF document
+                byte[] photoData = resourceEntity.getPhotoData();
+
+                // Set the desired width and height of the image (in points)
+                float desiredWidth = 100f; // Adjust this value according to your needs
+                float desiredHeight = 150f; // Adjust this value according to your needs
+
+                Image photoImage = new Image(ImageDataFactory.create(photoData))
+                        .setWidth(desiredWidth)
+                        .setHeight(desiredHeight)
+                        .setHorizontalAlignment(HorizontalAlignment.RIGHT);
+
+                document.add(photoImage);
+            }
+
+            document.add(new Paragraph("\n"));
+
+            document.add(new Paragraph("Applicant Info: \n").setFontSize(14));
+
+            Table table = new Table(2); // Create a table with 2 columns
+
+            // Add rows to the table
+            table.addCell("Applicant Id.  ");
+            table.addCell(new Paragraph(String.valueOf(aplcntId)));
+
+            table.addCell("Name  ");
+            table.addCell(admitcard.getCandidateId().getApplicant().getFirstName() + " " + admitcard.getCandidateId().getApplicant().getLastName());
+
+            table.addCell("Gender  ");
+            table.addCell(admitcard.getCandidateId().getApplicant().getGender());
+
+            table.addCell("Email  ");
+            table.addCell(admitcard.getCandidateId().getApplicant().getEmail());
+
+            table.addCell("Exam  ");
+            table.addCell(examName);
+
+            // Set alignment properties for the table
+            table.setFontSize(12);
+            table.setTextAlignment(TextAlignment.LEFT);
+            table.setHorizontalAlignment(HorizontalAlignment.LEFT);
+            table.setVerticalAlignment(VerticalAlignment.MIDDLE);
+
+            Border noBorder = new SolidBorder(0f);
+            table.setBorder(noBorder);
+
+            // Add the table to the document
+            document.add(table);
+
+            document.add(new Paragraph("\n"));
+
+//            document.add(new Paragraph("\n\nDetails QR Code: \n").setFontSize(14).setTextAlignment(TextAlignment.CENTER));
+
+            // Generate QR code containing information about the applicant
+            String qrCodeContent = "BJIT ACADEMY \nApplicant:\n" +
+                    "Serial Number: " + serialNumber + "\n" +
+                    "Name: " + admitcard.getCandidateId().getApplicant().getFirstName() + " " + admitcard.getCandidateId().getApplicant().getLastName() + "\n" +
+                    "Gender: " + admitcard.getCandidateId().getApplicant().getGender() + "\n" +
+                    "Date of Birth: " + admitcard.getCandidateId().getApplicant().getDob() + "\n" +
+                    "Email: " + admitcard.getCandidateId().getApplicant().getEmail() + "\n" +
+                    "Contact Number: " + admitcard.getCandidateId().getApplicant().getContactNumber() + "\n" +
+                    "Degree Name: " + admitcard.getCandidateId().getApplicant().getDegreeName() + "\n" +
+                    "Educational Institute: " + admitcard.getCandidateId().getApplicant().getEducationalInstitute() + "\n" +
+                    "Passing Year: " + admitcard.getCandidateId().getApplicant().getPassingYear();
+
+            byte[] qrCodeBytes = generateQRCode(qrCodeContent);
+            if (qrCodeBytes != null) {
+                // Embed the QR code image in the PDF document
+                Image qrCodeImage = new Image(ImageDataFactory.create(qrCodeBytes));
+                document.add(qrCodeImage.setHorizontalAlignment(HorizontalAlignment.CENTER));
+            }
+
+            document.add(new Paragraph("BJIT ACADEMY\n").setFontSize(18).setTextAlignment(TextAlignment.CENTER));
+
+            document.add(new Paragraph("Instruction Set: \n").setFontSize(12));
+            document.add(new Paragraph("1. Bring this admit card along with a valid photo ID for verification on the exam day.\n"));
+            document.add(new Paragraph("2. Do not carry any electronic devices or study materials to the exam hall.\n"));
+
+            // Save and close the PDF document
+            pdfDocument.close();
+
+            // Retrieve the byte array of the generated PDF
+            return outputStream.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private byte[] generateAdmitcardPdfBytes2(AdmitcardEntity admitcard) {
         // Generating a dummy PDF with the admit card details and QR code
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
              PdfDocument pdfDocument = new PdfDocument(new PdfWriter(outputStream));
@@ -264,14 +391,17 @@ public class AdmitcardServiceImplementation implements AdmitcardService {
 
             // Retrieve the serial number
             Long serialNumber = admitcard.getSerialNumber();
+            Long aplcntId = admitcard.getCandidateId().getApplicant().getApplicantId();
 
             // Add content to the PDF document
             document.add(new Paragraph("Admit Card").setFontSize(20).setTextAlignment(TextAlignment.CENTER));
 
+            document.add(new Paragraph("No. " + serialNumber).setTextAlignment(TextAlignment.CENTER));
+
             Table table = new Table(2); // Create a table with 2 columns
 
             // Add rows to the table
-            table.addCell("Candidate Name  ");
+            table.addCell("Candidate  ");
             table.addCell(admitcard.getCandidateId().getApplicant().getFirstName() + " " + admitcard.getCandidateId().getApplicant().getLastName());
 
             table.addCell("Gender  ");
@@ -283,8 +413,8 @@ public class AdmitcardServiceImplementation implements AdmitcardService {
             table.addCell("Exam Name  ");
             table.addCell(examName);
 
-            table.addCell("Serial Number  ");
-            table.addCell(new Paragraph(String.valueOf(serialNumber)));
+            table.addCell("Applicant Id.  ");
+            table.addCell(new Paragraph(String.valueOf(aplcntId)));
 
 
             // Set alignment properties for the table
@@ -300,8 +430,8 @@ public class AdmitcardServiceImplementation implements AdmitcardService {
             document.add(new Paragraph("\n\nDetails QR Code: \n").setFontSize(14).setTextAlignment(TextAlignment.CENTER));
 
             // Generate QR code containing information about the applicant
-            String qrCodeContent = "Applicant:\n" +
-                    "Serial Number: " + serialNumber +
+            String qrCodeContent = "BJIT ACADEMY \nApplicant:\n" +
+                    "Serial Number: " + serialNumber + "\n" +
                     "Name: " + admitcard.getCandidateId().getApplicant().getFirstName() + " " + admitcard.getCandidateId().getApplicant().getLastName() + "\n" +
                     "Gender: " + admitcard.getCandidateId().getApplicant().getGender() + "\n" +
                     "Date of Birth: " + admitcard.getCandidateId().getApplicant().getDob() + "\n" +

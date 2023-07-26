@@ -21,12 +21,13 @@ import RegistrationForm from './pages/registration/RegistrationForm';
 import LoginForm from './pages/login/LoginForm';
 import ApplicantRegister from './pages/applicant/ApplicantRegister';
 import Apply from './pages/apply/Apply';
-import NotificationProp from './pages/notification/NotificationProp';
+import NotificationProp from './pages/notification/NotificationProp2';
 import ResourceUpload from './pages/resource/ResourceUpload';
 import GetAdmitCard from './pages/admitcard/GetAdmitCard';
 import UploadWrittenMark from './pages/marks/UploadWrittenMark';
 import Footer from './components/footer/Footer';
 import ShowWrittenMarks from './pages/marks/ShowWrittenMarks';
+import NotificationP from './pages/notification/NotificationP';
 
 const App = () => {
   const [userRole, setUserRole] = useState(null); 
@@ -104,8 +105,8 @@ const App = () => {
               <Route path="/" element={<Home />} />
               <Route path="/applicant-register" element={<ApplicantRegister />} />
               <Route path="/apply" element={<Apply />} />
-              <Route path="/notification" element={<NotificationProp applicantId={7} />} />
-              <Route path="/resource-upload" element={<ResourceUpload applicantId={7} />} />
+              <Route path="/notification" element={<NotificationP />} />
+              {/* <Route path="/resource-upload" element={<ResourceUpload applicantId={6} />} /> */}
               <Route path="/admitcard" element={<GetAdmitCard />} />
             </>
           )}

@@ -39,8 +39,8 @@ public class CircularController {
     }
 
     @GetMapping("/{circularId}")
-    @PreAuthorize("permitAll()")
-//    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+//    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
     public ResponseEntity<Object> getDetailById(@PathVariable Long circularId) {
         return circularService.getDetailById(circularId);
     }

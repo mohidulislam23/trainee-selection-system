@@ -68,7 +68,7 @@ const Apply = () => {
         if (!applicantId.trim()) {
             setErrorMessages((prevState) => ({
                 ...prevState,
-                applicantId: 'Applicant ID cannot be blank',
+                applicantId: 'Temporary ID cannot be blank',
             }));
             hasError = true;
         }
@@ -152,11 +152,10 @@ const Apply = () => {
                         &times;
                     </span>
                     <form onSubmit={handleSubmit}>
-                        <label htmlFor="applicantId">Applicant ID:</label>
+                        <label htmlFor="applicantId">Temporary ID:</label>
                         <input
                             type="text"
-                            id="applicantId"
-                            //value={applicantId} do not use it, rather delete
+                            id="applicantId"                        
                             onChange={(e) => handleApplicantIdChange(e.target.value)}
                         />
                         {errorMessages.applicantId && <p className="error-message">{errorMessages.applicantId}</p>}

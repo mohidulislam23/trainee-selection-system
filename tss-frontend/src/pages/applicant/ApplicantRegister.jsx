@@ -3,8 +3,11 @@ import axios from 'axios';
 import jsPDF from 'jspdf'; //jsPDF library
 import 'jspdf-autotable'; // jspdf-autotable library
 import './ApplicantRegister.scss';
+import { Link } from 'react-router-dom';
+// import ResourceUpload from './resource/ResourceUpload';
 
 const ApplicantRegister = () => {
+
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [gender, setGender] = useState('');
@@ -16,6 +19,10 @@ const ApplicantRegister = () => {
     const [cgpa, setCgpa] = useState('');
     const [passingYear, setPassingYear] = useState('');
     const [presentAddress, setPresentAddress] = useState('');
+
+    const [photoFile, setPhotoFile] = useState(null);
+    const [cvFile, setCvFile] = useState(null);
+
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [applicantId, setApplicantId] = useState(null);
@@ -45,7 +52,7 @@ const ApplicantRegister = () => {
                 Authorization: `Bearer ${token}`,
             },
         })
-            .then((response) => {                
+            .then((response) => {
                 setApplicantId(response.data.applicantId);
                 setSuccessMessage('Applicant registered successfully.');
                 setErrorMessage('');
@@ -60,9 +67,50 @@ const ApplicantRegister = () => {
                 setCgpa(response.data.cgpa);
                 setPassingYear(response.data.passingYear);
                 setPresentAddress(response.data.presentAddress);
+
+                // Call the function to upload photo and CV
+                //uploadFiles(applicantId, token);
             })
             .catch((error) => {
                 setErrorMessage('Error registering applicant. Please try again.');
+                setSuccessMessage('');
+            });
+    };
+
+
+
+    const handleSubmitResource = (e) => {
+        e.preventDefault();
+
+        if (applicantId) {
+            // Call the function to upload photo and CV
+            uploadFiles(applicantId);
+        } else {
+            setErrorMessage('Please register the applicant before uploading the resource.');
+            setSuccessMessage('');
+        }
+    };
+
+
+    const uploadFiles = (applicantId) => {
+        const formData = new FormData();
+        formData.append('photo', photoFile);
+        formData.append('cv', cvFile);
+
+        const token = localStorage.getItem('token');
+
+        axios
+            .post(`http://localhost:8080/resource/applicant/${applicantId}`, formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then(() => {
+                setSuccessMessage('Photo and CV uploaded successfully.');
+                setErrorMessage('');
+            })
+            .catch((error) => {
+                setErrorMessage('Error uploading photo and CV. Please try again.');
                 setSuccessMessage('');
             });
     };
@@ -81,7 +129,7 @@ const ApplicantRegister = () => {
             pdf.addImage(watermarkImageUrl, 'PNG', xPosition, yPosition, watermarkWidth, watermarkHeight);
 
             const tableData = [
-                ['Applicant ID', btoa(applicantId)],
+                ['Temporary ID', btoa(applicantId)],
                 ['Full Name', `${firstName} ${lastName}`],
                 ['Email', email],
                 ['Contact Number', contactNumber],
@@ -230,9 +278,39 @@ const ApplicantRegister = () => {
                         required
                     />
                 </div>
+
                 <div>
                     <button type="submit">Register</button>
                 </div>
+
+
+            </form>
+
+            <form onSubmit={handleSubmitResource}>
+                <div>
+                    <label htmlFor="photo">Photo:</label>
+                    <input
+                        type="file"
+                        id="photo"
+                        onChange={(e) => setPhotoFile(e.target.files[0])}
+                        accept="image/*"
+                        required
+                    />
+                </div>
+                <div>
+                    <label htmlFor="cv">CV:</label>
+                    <input
+                        type="file"
+                        id="cv"
+                        onChange={(e) => setCvFile(e.target.files[0])}
+                        accept=".pdf"
+                        required
+                    />
+                </div>
+                <div>
+                    <button type="submit">Upload Resource</button>
+                </div>
+
             </form>
 
 
@@ -241,8 +319,8 @@ const ApplicantRegister = () => {
 
             {applicantId && (
                 <div>
-                    <p>Applicant ID: {btoa(applicantId)}</p>
-                    <button onClick={handleGeneratePDF}>Save as PDF</button>
+                    <p>Temporary ID: {btoa(applicantId)}</p>
+                    <button onClick={handleGeneratePDF} style={{ background: 'blue' }}>Save as PDF</button>
                 </div>
             )}
         </div>

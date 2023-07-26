@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import './ResourceShow.scss'; // Import the SCSS file
+import './ResourceShow.scss'; 
 
 const ResourceShow = ({ applicantId }) => {
   const [resourceData, setResourceData] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    // Fetch resource data for the given applicantId
     const token = localStorage.getItem('token');
     fetch(`http://localhost:8080/resource/applicant/${applicantId}`, {
       headers: {
