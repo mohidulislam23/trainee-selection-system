@@ -7,6 +7,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/admitcard")
 @RequiredArgsConstructor
@@ -19,6 +31,20 @@ public class AdmitcardController {
     public ResponseEntity<Object> createAdmitcard(@RequestBody AdmitcardModel admitcardModel) {
         return admitcardService.createAdmitcard(admitcardModel);
     }
+
+//    @PostMapping
+//    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+//    public ResponseEntity<Object> createAdmitcard(@RequestBody AdmitcardModel admitcardModel) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        List<String> userRoles = authentication.getAuthorities().stream()
+//                .map(GrantedAuthority::getAuthority)
+//                .collect(Collectors.toList());
+//
+//        // Log user roles
+//        System.out.println("User roles: " + userRoles);
+//
+//        return admitcardService.createAdmitcard(admitcardModel);
+//    }
 
     @PutMapping("/{admitcardId}")
     @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")

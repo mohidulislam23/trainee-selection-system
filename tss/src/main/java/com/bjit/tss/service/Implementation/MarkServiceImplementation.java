@@ -65,10 +65,6 @@ public class MarkServiceImplementation implements MarkService {
         if (markEntityOptional.isPresent()) {
             MarkEntity markEntity = markEntityOptional.get();
 
-            //ExamEntity examEntity = examRepository.findById(markModel.getExam().getExamId())
-                    //.orElseThrow(() -> new NotFoundException("Exam not found")); //test purpose, it should not be update
-
-            //markEntity.setExam(examEntity); //test purpose, it should not be update
             markEntity.setCircular(markModel.getCircular());
             markEntity.setApplicantId(markModel.getApplicantId());
             markEntity.setMark(markModel.getMark());

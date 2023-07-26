@@ -18,5 +18,6 @@ public interface MailService {
     ResponseEntity<Object> sendMailToApplicants2(Long mailId, String username, String password);
 
 
+    ResponseEntity<Object> sendMailToInterviewCandidate(Long mailId, String username, String password);
 }
 

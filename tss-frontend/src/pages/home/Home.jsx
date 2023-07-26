@@ -59,7 +59,7 @@ const Home = () => {
           <ol>
             <li>Register as an applicant.</li>
             <li>Upload resources.</li>
-            <li>Apply for circulars.</li>
+            <li>Apply for training.</li>
           </ol>
         </Modal.Body>
         <Modal.Footer>

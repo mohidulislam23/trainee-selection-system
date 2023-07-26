@@ -68,7 +68,7 @@ const Approve = () => {
   const handleGenerateAdmitCard = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:8080/admitcard/', {
+      await axios.post('http://localhost:8080/admitcard/', {}, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -76,13 +76,15 @@ const Approve = () => {
       fetchAdmitCards();
     } catch (error) {
       console.error('Error generating admit card:', error);
+      console.error('Error generating admit card:', error);
+      console.log('Response data:', error.response.data);
     }
   };
 
   const handleGenerateHiddenCode = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:8080/written/auto-create', {
+      await axios.post('http://localhost:8080/written/auto-create', {}, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -114,17 +116,6 @@ const Approve = () => {
     }
     setSortConfig({ key, direction });
   };
-
-  // const getSortedData = () => {
-  //   const { key, direction } = sortConfig;
-  //   if (key === '') return applicants;
-  //   const sortedData = [...applicants].sort((a, b) => {
-  //     if (a[key] < b[key]) return direction === 'asc' ? -1 : 1;
-  //     if (a[key] > b[key]) return direction === 'asc' ? 1 : -1;
-  //     return 0;
-  //   });
-  //   return sortedData;
-  // };
 
   const getSortedData = () => {
     const { key, direction } = sortConfig;
@@ -181,7 +172,7 @@ const Approve = () => {
   };
 
   const handleDownloadExcelForMarkUpload = () => {
-    const dataToExport = writtenData.map(({ hiddenCode, mark }) => ({ hiddenCode, mark }));
+    const dataToExport = writtenData.map(({ hiddenCode, mark, circular }) => ({ hiddenCode, mark, circular }));
     handleDownloadExcel(dataToExport);
   };
 
@@ -286,19 +277,19 @@ const Approve = () => {
           <table>
             <thead>
               <tr>
-                <th>Hidden Code</th>
-                <th>Mark</th>
                 <th>Applicant ID</th>
+                <th>Hidden Code</th>                
                 <th>Circular</th>
+                {/* <th>Mark</th> */}
               </tr>
             </thead>
             <tbody>
               {writtenData.map((data) => (
                 <tr key={data.writtenId}>
-                  <td>{data.hiddenCode}</td>
-                  <td>{data.mark}</td>
                   <td>{data.applicantId}</td>
+                  <td>{data.hiddenCode}</td>                                    
                   <td>{data.circular}</td>
+                  {/* <td>{data.mark}</td> */}
                 </tr>
               ))}
             </tbody>

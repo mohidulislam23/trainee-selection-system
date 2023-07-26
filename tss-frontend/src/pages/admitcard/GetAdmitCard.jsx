@@ -83,7 +83,7 @@ const GetAdmitCard = () => {
     <div className="get-admit-card">
       <h2>Get Admit Card</h2>
       <div className="input-container">
-        <label htmlFor="applicantId">Enter Your Applicant ID:</label>
+        <label htmlFor="applicantId">Enter Your Temporary ID:</label>
         <input
           type="text"
           id="applicantId"
@@ -111,7 +111,7 @@ const GetAdmitCard = () => {
                 </td>
               </tr>
               <tr>
-                <td>Serial Number:</td>
+                <td>Admit No. </td>
                 <td>{admitCardData.serialNumber}</td>
               </tr>
             </tbody>

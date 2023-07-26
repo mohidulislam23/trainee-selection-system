@@ -55,5 +55,14 @@ public class MailController {
         return mailService.sendMailToApplicants2(mailId, username, password);
     }
 
+    @PostMapping("/sendToInterviewCandidate/{mailId}")
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    public ResponseEntity<Object> sendMailToInterviewCandidate(@PathVariable Long mailId, @RequestBody MailCredentials credentials) {
+        String username = credentials.getUsername();
+        String password = credentials.getPassword();
+
+        return mailService.sendMailToInterviewCandidate(mailId, username, password);
+    }
+
 }
 
