@@ -4,7 +4,6 @@ import com.bjit.tss.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,8 +29,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .antMatchers("/user/register").permitAll()
                 .antMatchers("/user/login").permitAll()
-                //.antMatchers(HttpMethod.POST, "/circular", "/approve").hasRole("ADMIN")
-                //.antMatchers("/circular").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
@@ -43,27 +40,3 @@ public class SecurityConfig {
         return http.build();
     }
 }
-
-
-//.csrf()
-//        .disable()
-//        .authorizeHttpRequests()
-//        .requestMatchers("/user/register")
-//        .permitAll()
-//        .requestMatchers("/user/login")
-//        .permitAll()
-//        .requestMatchers("/books/create").hasAuthority("ADMIN")
-//        .requestMatchers("/books/update/**").hasAuthority("ADMIN")
-//        .requestMatchers("/books/all").hasAnyAuthority("ADMIN", "CUSTOMER")
-//        .requestMatchers("/books/id/**").hasAnyAuthority("ADMIN", "CUSTOMER")
-//        .requestMatchers("/books/author/**").hasAnyAuthority("ADMIN", "CUSTOMER")
-//        .requestMatchers("/books/delete/**").hasAuthority("ADMIN")
-//        .anyRequest()
-//        .authenticated()
-//        .and()
-//        .sessionManagement()
-//        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//        .and()
-//        .authenticationProvider(authenticationProvider)
-//        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-//        ;

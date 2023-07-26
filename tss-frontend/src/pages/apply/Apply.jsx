@@ -12,7 +12,7 @@ const Apply = () => {
     });
     const [appliedCirculars, setAppliedCirculars] = useState([]);
 
-    // Fetch circular data from the server
+    
     const fetchCircularData = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -27,10 +27,9 @@ const Apply = () => {
         }
     };
 
-    // Fetch the list of circulars the user has already applied for on component mount
+    
     useEffect(() => {
-        // For demonstration purposes, we assume the API endpoint '/applied-circulars/' exists
-        // and returns an array of circular IDs the user has applied for.
+        
         const fetchAppliedCirculars = async () => {
             try {
                 const token = localStorage.getItem('token');
@@ -49,7 +48,6 @@ const Apply = () => {
         fetchAppliedCirculars();
     }, []);
 
-    // Handle apply button click and show the form
     const handleApplyClick = (circularId) => {
         if (!appliedCirculars.includes(circularId)) {
             setShowForm(true);
@@ -57,12 +55,10 @@ const Apply = () => {
         }
     };
 
-    // Handle form submission
     const handleSubmit = async (event) => {
         event.preventDefault();
         setErrorMessages({ applicantId: '' });
 
-        // Validate input fields
         let hasError = false;
 
         if (!applicantId.trim()) {
@@ -77,7 +73,6 @@ const Apply = () => {
             return;
         }
 
-        // Make the API call to submit the application
         const data = {
             applicant: {
                 applicantId: parseInt(applicantId),
@@ -104,13 +99,11 @@ const Apply = () => {
             }));
         }
 
-        // Reset form and hide it
         setShowForm(false);
         setApplicantId('');
         setSelectedCircularId('');
     };
 
-    // Handle cancel button click to hide the form
     const handleCancelClick = () => {
         setShowForm(false);
         setApplicantId('');
@@ -118,7 +111,6 @@ const Apply = () => {
         setErrorMessages({ applicantId: '' });
     };
 
-    // Function to handle decoding and update applicantId state
     const handleApplicantIdChange = (encodedApplicantId) => {
         try {
             const decodedApplicantId = atob(encodedApplicantId);

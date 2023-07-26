@@ -10,21 +10,18 @@ const CreateCircular = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Check if input fields are not blank
+    
     if (!title || !description) {
       setErrorMessage('Please fill in all the fields.');
       setSuccessMessage('');
       return;
     }
 
-    // Create the circular object with the entered data
     const circularData = {
       title,
       description,
     };
 
-    // Send a POST request to create the circular
     const token = localStorage.getItem('token');
     axios.post('http://localhost:8080/circular/', circularData, {
       headers: {
@@ -34,7 +31,6 @@ const CreateCircular = () => {
       .then(() => {
         setSuccessMessage('Circular created successfully.');
         setErrorMessage('');
-        // Clear the form after successful submission
         setTitle('');
         setDescription('');
       })

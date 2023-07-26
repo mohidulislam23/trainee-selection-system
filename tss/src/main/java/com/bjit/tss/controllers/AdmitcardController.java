@@ -7,17 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/admitcard")
@@ -27,7 +19,7 @@ public class AdmitcardController {
     private final AdmitcardService admitcardService;
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Object> createAdmitcard(@RequestBody AdmitcardModel admitcardModel) {
         return admitcardService.createAdmitcard(admitcardModel);
     }
@@ -47,25 +39,25 @@ public class AdmitcardController {
 //    }
 
     @PutMapping("/{admitcardId}")
-    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    @PreAuthorize("hasAnyRole( 'ADMIN')")
     public ResponseEntity<Object> updateAdmitcard(@PathVariable Long admitcardId, @RequestBody AdmitcardModel admitcardModel) {
         return admitcardService.updateAdmitcard(admitcardId, admitcardModel);
     }
 
     @DeleteMapping("/{admitcardId}")
-    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    @PreAuthorize("hasAnyRole( 'ADMIN')")
     public ResponseEntity<Object> deleteAdmitcard(@PathVariable Long admitcardId) {
         return admitcardService.deleteAdmitcard(admitcardId);
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN')")
     public ResponseEntity<Object> getAllAdmitcards() {
         return admitcardService.getAllAdmitcards();
     }
 
     @GetMapping("/{applicantId}")
-    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN')")
     public ResponseEntity<Object> getAdmitcardById(@PathVariable Long applicantId) {
         return admitcardService.getAdmitcardById(applicantId);
     }

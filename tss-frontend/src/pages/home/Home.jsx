@@ -50,7 +50,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Instruction Set Modal */}
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
           <Modal.Title>Instruction Set</Modal.Title>

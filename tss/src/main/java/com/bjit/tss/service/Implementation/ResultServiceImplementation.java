@@ -32,13 +32,11 @@ public class ResultServiceImplementation implements ResultService {
             return ResponseEntity.badRequest().body("No marks found");
         }
 
-        // Group the marks by applicantId
         Map<Long, List<MarkEntity>> marksByApplicantId = markEntities.stream()
                 .collect(Collectors.groupingBy(MarkEntity::getApplicantId));
 
         List<ResultEntity> results = new ArrayList<>();
 
-        // Iterate over the grouped marks and calculate results
         for (List<MarkEntity> marks : marksByApplicantId.values()) {
             if (marks.size() >= 2) {
                 double sum = marks.stream()
@@ -74,7 +72,6 @@ public class ResultServiceImplementation implements ResultService {
             ResultEntity existingResult = resultEntityOptional.get();
             Long applicantId = existingResult.getApplicantId();
 
-            // Retrieve all marks by applicantId from MarkEntity
             List<MarkEntity> markEntities = markRepository.findByApplicantId(applicantId);
 
             if (markEntities.size() < 1) {

@@ -16,10 +16,9 @@ public class ResultController {
     private boolean isResultGenerated = false;
 
     @PostMapping("/generate")
-    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    @PreAuthorize("hasAnyRole( 'ADMIN')")
     public ResponseEntity<Object> saveResult(@RequestBody ResultModel resultModel) {
         if (isResultGenerated) {
-            // Result has already been generated, return an error response
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Result has already been generated. Cannot generate again.");
         }
@@ -33,37 +32,37 @@ public class ResultController {
     }
 
     @PutMapping("/update/{resultId}")
-    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    @PreAuthorize("hasAnyRole( 'ADMIN')")
     public ResponseEntity<Object> updateResult(@PathVariable Long resultId, @RequestBody ResultModel resultModel) {
         return resultService.updateResult(resultId, resultModel);
     }
 
     @GetMapping("/{resultId}")
-    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN')")
     public ResponseEntity<Object> getResultById(@PathVariable Long resultId) {
         return resultService.getResultById(resultId);
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN')")
     public ResponseEntity<Object> getAllResults() {
         return resultService.getAllResults();
     }
 
     @GetMapping("/applicant/{applicantId}")
-    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN')")
     public ResponseEntity<Object> getResultsByApplicantId(@PathVariable Long applicantId) {
         return resultService.getResultsByApplicantId(applicantId);
     }
 
     @GetMapping("/circular/{circularTitle}")
-    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN')")
     public ResponseEntity<Object> getResultsByCircularTitle(@PathVariable String circularTitle) {
         return resultService.getResultsByCircularTitle(circularTitle);
     }
 
     @DeleteMapping("/{resultId}")
-    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    @PreAuthorize("hasAnyRole( 'ADMIN')")
     public ResponseEntity<Object> deleteResult(@PathVariable Long resultId) {
         return resultService.deleteResult(resultId);
     }

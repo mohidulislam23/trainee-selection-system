@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import './GetAdmitCard.scss';
 
@@ -23,13 +22,13 @@ const GetAdmitCard = () => {
 
     const decodedApplicantId = atob(applicantId);
 
-    // Get the token from localStorage
+    
     const token = localStorage.getItem('token');
 
     axios
       .get(`http://localhost:8080/admitcard/${decodedApplicantId}`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+          Authorization: `Bearer ${token}`, 
         },
       })
       .then((response) => {
@@ -49,19 +48,19 @@ const GetAdmitCard = () => {
       return;
     }
 
-    // Get the token from localStorage
+    
     const token = localStorage.getItem('token');
     const decodedApplicantId = atob(applicantId);
 
     axios
     .get(`http://localhost:8080/admitcard/${decodedApplicantId}/pdf`, {
-      responseType: 'arraybuffer', // Ensure response is treated as binary data
+      responseType: 'arraybuffer', 
       headers: {
-        Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+        Authorization: `Bearer ${token}`, 
       },
     })
       .then((response) => {
-        // Simulate downloading the PDF
+        
         const pdfData = new Uint8Array(response.data);
         const blob = new Blob([pdfData], { type: 'application/pdf' });
         const url = URL.createObjectURL(blob);

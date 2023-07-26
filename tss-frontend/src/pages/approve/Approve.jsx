@@ -144,16 +144,12 @@ const Approve = () => {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Hidden_Code_Data');
 
-    // Convert workbook to a binary string
     const excelData = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
 
-    // Create a Blob from the binary string
     const excelBlob = new Blob([excelData], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
-    // Create a URL for the Blob
     const excelURL = URL.createObjectURL(excelBlob);
 
-    // Create a hidden anchor element and simulate a click to download the file
     const a = document.createElement('a');
     a.href = excelURL;
     a.download = 'hidden_code_data.xlsx';
@@ -161,7 +157,6 @@ const Approve = () => {
     document.body.appendChild(a);
     a.click();
 
-    // Remove the anchor element after download
     URL.revokeObjectURL(excelURL);
   };
 
@@ -294,7 +289,6 @@ const Approve = () => {
               ))}
             </tbody>
           </table>
-          {/* <button>Download Hidden Code File</button> */}
           <button onClick={handleDownloadExcelForHiddenCode}>Download Hidden Code Details</button>
           <button onClick={handleDownloadExcelForMarkUpload}>Download Hidden Code File For Mark Upload</button>
 

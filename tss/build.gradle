@@ -36,7 +36,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 
-
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	compileOnly 'org.projectlombok:lombok'
 
@@ -54,7 +53,6 @@ dependencies {
 
 	implementation 'javax.persistence:persistence-api:2.2'
 	implementation 'javax.persistence:javax.persistence-api:2.2'
-
 
 //	itextpdf
 	implementation 'com.itextpdf:itext7-core:7.1.16'

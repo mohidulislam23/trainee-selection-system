@@ -15,19 +15,19 @@ public class ResourceController {
 
 
     @PostMapping("/{applicantId}")
-    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN')")
     public ResponseEntity<Object> saveResourceByApplicantId(@PathVariable Long applicantId, @RequestBody MultipartFile photo, @RequestBody MultipartFile cv) {
         return resourceService.saveResourceByApplicantId(applicantId, photo, cv);
     }
 
     @GetMapping("/{applicantId}")
-    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN')")
     public ResponseEntity<Object> getResourceByApplicantId(@PathVariable Long applicantId) {
         return resourceService.getResourceByApplicantId(applicantId);
     }
 
     @DeleteMapping("/{applicantId}")
-    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN', 'EVALUATOR')")
+    @PreAuthorize("hasAnyRole('APPLICANT', 'ADMIN')")
     public ResponseEntity<Object> deleteResourceByApplicantId(@PathVariable Long applicantId) {
         return resourceService.deleteResourceByApplicantId(applicantId);
     }

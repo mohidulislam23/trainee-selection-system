@@ -6,7 +6,6 @@ import com.bjit.tss.model.ResourceModel;
 import com.bjit.tss.repository.ResourceRepository;
 import com.bjit.tss.service.ResourceService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,21 +24,16 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public ResponseEntity<Object> saveResourceByApplicantId(Long applicantId, MultipartFile photo, MultipartFile cv) {
         try {
-            // Convert the MultipartFile data to byte arrays
             byte[] photoData = photo.getBytes();
             byte[] cvData = cv.getBytes();
 
-            // Check if a resource with the given applicantId already exists
             Optional<ResourceEntity> existingResourceOptional = resourceRepository.findByApplicant_ApplicantId(applicantId);
             if (existingResourceOptional.isPresent()) {
                 ResourceEntity existingResource = existingResourceOptional.get();
-                // Update the existing resource with the new photo and cv data
                 existingResource.setPhotoData(photoData);
                 existingResource.setCvData(cvData);
-                // Save the updated resource
                 resourceRepository.save(existingResource);
 
-                // Create a ResourceModel from the updated entity
                 ResourceModel updatedResourceModel = new ResourceModel(
                         existingResource.getRsId(),
                         existingResource.getApplicant(),
@@ -49,7 +43,6 @@ public class ResourceServiceImpl implements ResourceService {
 
                 return ResponseEntity.status(HttpStatus.OK).body(updatedResourceModel);
             } else {
-                // If no existing resource, create a new resource and save it
                 ApplicantEntity applicantEntity = ApplicantEntity.builder().applicantId(applicantId).build();
                 ResourceEntity newResource = ResourceEntity.builder()
                         .applicant(applicantEntity)
@@ -59,7 +52,6 @@ public class ResourceServiceImpl implements ResourceService {
 
                 ResourceEntity savedResource = resourceRepository.save(newResource);
 
-                // Create a ResourceModel from the saved entity
                 ResourceModel savedResourceModel = new ResourceModel(
                         savedResource.getRsId(),
                         savedResource.getApplicant(),

@@ -63,7 +63,6 @@ const UploadMark = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validation: Check if inputs are not empty
     if (!examId || !circular || !applicantId || !mark) {
       setErrorMessage('All fields are required.');
       return;
@@ -171,14 +170,7 @@ const UploadMark = () => {
           </select>
         </div>
         <div>
-          <label htmlFor="circular">Circular:</label>
-          {/* <input
-            type="text"
-            id="circular"
-            value={circular}
-            onChange={(e) => setCircular(e.target.value)}
-            required
-          /> */}
+          <label htmlFor="circular">Circular:</label>          
           <select
             type="text"
             id="circular"
@@ -225,7 +217,6 @@ const UploadMark = () => {
       <div className="upload-mark__table">
         <h2>All Marks</h2>
         <table>
-          {/* Table headers */}
           <thead>
             <tr>
               <th>Mark ID</th>
@@ -236,7 +227,6 @@ const UploadMark = () => {
               <th>Mark</th>
             </tr>
           </thead>
-          {/* Table data */}
           <tbody>
             {allMarks.map((mark) => (
               <tr key={mark.markId}>
@@ -265,7 +255,6 @@ const UploadMark = () => {
           <button onClick={() => fetchMarksByApplicant(applicantId)}>Search</button>
         </div>
         <table>
-          {/* Table headers */}
           <thead>
             <tr>
               <th>Mark ID</th>
@@ -276,7 +265,6 @@ const UploadMark = () => {
               <th>Mark</th>
             </tr>
           </thead>
-          {/* Table data */}
           <tbody>
             {marksByApplicant.map((mark) => (
               <tr key={mark.markId}>
@@ -305,7 +293,6 @@ const UploadMark = () => {
           <button onClick={() => fetchMarksByCircular(circular)}>Search</button>
         </div>
         <table>
-          {/* Table headers */}
           <thead>
             <tr>
               <th>Mark ID</th>
@@ -316,7 +303,6 @@ const UploadMark = () => {
               <th>Mark</th>
             </tr>
           </thead>
-          {/* Table data */}
           <tbody>
             {marksByCircular.map((mark) => (
               <tr key={mark.markId}>

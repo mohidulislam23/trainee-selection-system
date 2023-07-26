@@ -20,18 +20,15 @@ public class ApprovalServiceImplementation implements ApprovalService {
 
     @Override
     public ResponseEntity<Object> createApproval(ApprovalModel approvalModel) {
-        // Check if the applicant has already applied for the circular
         Optional<ApprovalEntity> existingApproval = approvalRepository.findByApplicantAndCircular(
                 approvalModel.getApplicant(),
                 approvalModel.getCircular()
         );
 
         if (existingApproval.isPresent()) {
-            // An application already exists for the given applicant and circular
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Applicant has already applied for this circular");
         }
 
-        // If no existing application found, create a new approval
         ApprovalEntity approvalEntity = new ApprovalEntity();
         approvalEntity.setApplicant(approvalModel.getApplicant());
         approvalEntity.setCircular(approvalModel.getCircular());
@@ -49,7 +46,6 @@ public class ApprovalServiceImplementation implements ApprovalService {
         if (optionalApproval.isPresent() && checkApproval.isPresent()) {
             ApprovalEntity existingApproval = optionalApproval.get();
 
-            // Check if the applicant is already approved for another circular
             List<ApprovalEntity> existingApprovals = approvalRepository.findByApplicant_ApplicantIdAndCircularNot(approvalModel.getApplicant().getApplicantId(), approvalModel.getCircular());
             boolean isPreviousApprovalFound = existingApprovals.stream()
                     .anyMatch(approval -> approval.isApproved());

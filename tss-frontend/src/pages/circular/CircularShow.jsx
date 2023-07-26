@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import './CircularShow.scss';
 import axios from 'axios';
 
@@ -24,7 +23,6 @@ const CircularShow = () => {
     }
   };
 
-  // Make sure circularData is defined and is an array
   if (!circularData || !Array.isArray(circularData) || circularData.length === 0) {
     return (
       <div className="circular-show">

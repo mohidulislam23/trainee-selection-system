@@ -12,8 +12,6 @@ import java.util.Optional;
 @Repository
 public interface ApprovalRepository extends JpaRepository<ApprovalEntity, Long> {
 
-//    Optional<ApprovalEntity> findByApplicant_ApplicantIdAndCircular_CircularId(Long applicantId, Long circularId);
-
     List<ApprovalEntity> findByApplicant_ApplicantIdAndCircularNot(Long applicantId, CircularEntity circular);
 
     List<ApprovalEntity> findByIsApprovedTrue();

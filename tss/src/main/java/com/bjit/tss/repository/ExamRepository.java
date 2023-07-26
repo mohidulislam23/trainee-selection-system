@@ -2,7 +2,6 @@ package com.bjit.tss.repository;
 
 import com.bjit.tss.entity.ExamEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository

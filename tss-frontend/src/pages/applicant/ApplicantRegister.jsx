@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import jsPDF from 'jspdf'; //jsPDF library
-import 'jspdf-autotable'; // jspdf-autotable library
+import jsPDF from 'jspdf'; 
+import 'jspdf-autotable'; 
 import './ApplicantRegister.scss';
-import { Link } from 'react-router-dom';
-// import ResourceUpload from './resource/ResourceUpload';
 
 const ApplicantRegister = () => {
 
@@ -66,10 +64,7 @@ const ApplicantRegister = () => {
                 setEducationalInstitute(response.data.educationalInstitute);
                 setCgpa(response.data.cgpa);
                 setPassingYear(response.data.passingYear);
-                setPresentAddress(response.data.presentAddress);
-
-                // Call the function to upload photo and CV
-                //uploadFiles(applicantId, token);
+                setPresentAddress(response.data.presentAddress);                
             })
             .catch((error) => {
                 setErrorMessage('Error registering applicant. Please try again.');
@@ -82,8 +77,7 @@ const ApplicantRegister = () => {
     const handleSubmitResource = (e) => {
         e.preventDefault();
 
-        if (applicantId) {
-            // Call the function to upload photo and CV
+        if (applicantId) {            
             uploadFiles(applicantId);
         } else {
             setErrorMessage('Please register the applicant before uploading the resource.');
@@ -230,8 +224,7 @@ const ApplicantRegister = () => {
                     >
                         <option value="Bachelor's Degree">Bachelor's Degree</option>
                         <option value="Master's Degree">Master's Degree</option>
-                        <option value="Ph.D.">Ph.D.</option>
-                        {/* Add more degree options if needed */}
+                        <option value="Ph.D.">Ph.D.</option>                        
                     </select>
                 </div>
                 <div>

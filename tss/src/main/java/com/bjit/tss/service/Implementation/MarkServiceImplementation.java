@@ -1,6 +1,5 @@
 package com.bjit.tss.service.Implementation;
 
-import com.bjit.tss.entity.AdmitcardEntity;
 import com.bjit.tss.entity.ExamEntity;
 import com.bjit.tss.entity.MarkEntity;
 import com.bjit.tss.exceptions.NotFoundException;
